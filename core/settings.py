@@ -7,8 +7,6 @@ environ.Env.read_env()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# SECRET_KEY = env("SECRET_KEY")
 SECRET_KEY = env("SECRET_KEY")
 
 DEBUG = env("DEBUG")
@@ -26,7 +24,7 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
 ]
 
-PROJECT_APPS = []
+PROJECT_APPS = ["db"]
 
 ECOMMERCE_APPS = []
 
@@ -119,3 +117,5 @@ USE_TZ = True
 STATIC_URL = "/static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+AUTH_USER_MODEL = "db.UserAccount"
