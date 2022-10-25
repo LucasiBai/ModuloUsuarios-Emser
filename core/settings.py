@@ -24,14 +24,11 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
 ]
 
-PROJECT_APPS = ["db"]
+PROJECT_APPS = ["db", "users"]
 
 ECOMMERCE_APPS = []
 
-THIRD_PARTY_APPS = [
-    "corsheaders",
-    "rest_framework",
-]
+THIRD_PARTY_APPS = ["corsheaders", "rest_framework", "rest_framework.authtoken"]
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + ECOMMERCE_APPS + THIRD_PARTY_APPS
 

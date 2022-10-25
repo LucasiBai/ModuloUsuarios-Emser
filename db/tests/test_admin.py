@@ -43,3 +43,12 @@ class ModelTest(TestCase):
         res = self.client.get(url)
 
         self.assertEqual(res.status_code, 200)
+
+    def test_create_user_page(self):
+        """
+        Tests if the create user page work
+        """
+        url = reverse("admin:db_useraccount_add")
+        res = self.client.get(url)
+
+        self.assertEqual(res.status_code, 200)
