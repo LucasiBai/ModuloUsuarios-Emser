@@ -39,6 +39,3 @@ https://lacandelabaigorria.vercel.app/
 - Django Rest Framework
 - Django Tests
 
-## Example:
-
-![screen2](https://user-images.githubusercontent.com/99888705/192900678-bae298b2-01f0-4e15-9674-c158e61e9523.gif)
