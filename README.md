@@ -11,7 +11,7 @@
 
 ## How to Use:
 
-To clone and run this application, you'll need Python and pip installed on your computer.
+To clone and run this application, you'll need Python ^3.8 and pip installed on your computer.
 
 - `git clone https://github.com/LucasiBai/LaCandelaBaigorria.git` to download the code.
 - `cd LaCandelaBaigorria` go into the repository.
@@ -24,7 +24,7 @@ This is the backend of an ecommerce maded for "La Candela" ilumination shop in M
 
 ## Deploy Link:
 
-https://lucasibaieco.netlify.app/
+https://lacandelabaigorria.vercel.app/
 
 ## Roots:
 

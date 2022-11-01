@@ -9,12 +9,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = env("SECRET_KEY")
 
-DEBUG = env("DEBUG")
-
-
-ALLOWED_HOSTS = ["*"]
-
-
 DJANGO_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -24,11 +18,19 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
 ]
 
-PROJECT_APPS = ["db", "users"]
+PROJECT_APPS = [
+    "db",
+    "apps.users",
+]
 
 ECOMMERCE_APPS = []
 
-THIRD_PARTY_APPS = ["corsheaders", "rest_framework", "rest_framework.authtoken"]
+THIRD_PARTY_APPS = [
+    "corsheaders",
+    "rest_framework",
+    "rest_framework.authtoken",
+    "simple_history",
+]
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + ECOMMERCE_APPS + THIRD_PARTY_APPS
 
@@ -42,6 +44,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "simple_history.middleware.HistoryRequestMiddleware",
 ]
 
 ROOT_URLCONF = "core.urls"
@@ -49,7 +52,7 @@ ROOT_URLCONF = "core.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, "build")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -63,25 +66,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "core.wsgi.application"
-
-
-DATABASES = {
-    "default": env.db("DATABASE_URL", default="postgres:///ecommerceDB"),
-}
-
-CORS_ORIGIN_WHITELIST = [
-    "http://localhost:3000",
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
-    "http://127.0.0.1:3000",
-]
-
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
-    "http://127.0.0.1:3000",
-]
 
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -100,7 +84,9 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-LANGUAGE_CODE = "en-us"
+AUTH_USER_MODEL = "db.UserAccount"
+
+LANGUAGE_CODE = "es"
 
 TIME_ZONE = "UTC"
 
@@ -114,5 +100,3 @@ USE_TZ = True
 STATIC_URL = "/static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-AUTH_USER_MODEL = "db.UserAccount"
