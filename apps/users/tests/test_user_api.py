@@ -6,7 +6,8 @@ from rest_framework.test import APIClient
 from rest_framework import status
 
 
-CREATE_USER_URL = reverse("users:user_account-list")  # url of create user API
+CREATE_USER_URL = reverse("users:user_account-list")  # create user API url
+TOKEN_URL = reverse("users:token_obtain_pair")  # user token url
 
 
 def create_user(**kwargs):
@@ -90,6 +91,63 @@ class PublicUsersAPITests(TestCase):
 
         user_exists = get_user_model().objects.filter(email=payload["email"]).exists()
         self.assertFalse(user_exists)
+
+    def test_create_token_for_user(self):
+        """
+        Tests if can create JWT succesfuly
+        """
+        payload = {
+            "email": "test@.com",
+            "password": "testpassword",  # Mock user create data
+            "first_name": "Test",
+        }
+        create_user(**payload)
+
+        res = self.client.post(TOKEN_URL, payload)
+
+        self.assertIn("access", res.data)
+
+        self.assertEqual(status.HTTP_200_OK, res.status_code)
+
+    def test_create_token_invalid_credentials(self):
+        """
+        Tests if JWT was'nt created without invalid credentials
+        """
+        create_user(email="test@test.com", password="test123")
+        payload = {
+            "email": "test@test.com",
+            "password": "wrongpassword",  # Mock user create data
+            "first_name": "Test",
+        }
+
+        res = self.client.post(TOKEN_URL, payload)
+
+        self.assertNotIn("access", res.data)
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_create_token_no_user(self):
+        """
+        Tests if JWT was'nt created without user
+        """
+        payload = {
+            "email": "test@test.com",
+            "password": "wrongpassword",  # Mock user create data
+            "first_name": "Test",
+        }
+
+        res = self.client.post(TOKEN_URL, payload)
+
+        self.assertNotIn("access", res.data)
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_create_token_missing_field(self):
+        """
+        Tests if email and password are required
+        """
+        res = self.client.post(TOKEN_URL, {"email": "", "password": ""})
+
+        self.assertNotIn("access", res.data)
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 
 
 # class PrivateUsersAPITests(TestCase):

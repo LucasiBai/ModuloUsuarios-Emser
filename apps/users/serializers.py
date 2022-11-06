@@ -23,7 +23,7 @@ class UserAccountSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         """
-        Creata a new user with create_user
+        Create a new user with create_user
         """
         user = get_user_model().objects.create_user(**validated_data)
         return user
