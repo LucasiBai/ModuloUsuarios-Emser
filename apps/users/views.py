@@ -1,9 +1,13 @@
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, authenticate
 
+from rest_framework import status
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
 
-from .serializers import UserAccountSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+
+from .serializers import UserAccountSerializer, LoginTokenObtainSerializer
 
 
 class UserAccountViewset(ModelViewSet):
@@ -21,3 +25,32 @@ class UserAccountViewset(ModelViewSet):
             permission_classes = [IsAuthenticated]
 
         return [permission() for permission in permission_classes]
+
+
+class LoginTokenObtainView(TokenObtainPairView):
+    serializer_class = LoginTokenObtainSerializer
+
+    def post(self, request, *args, **kwargs):
+        email = request.data.get("email", "")
+        password = request.data.get("password", "")
+
+        user = authenticate(email=email, password=password)
+
+        if user:
+            login_serializer = self.serializer_class(data=request.data)
+            if login_serializer.is_valid():
+                user_serializer = UserAccountSerializer(user)
+                return Response(
+                    {
+                        "token": login_serializer.validated_data["access"],
+                        "refresh-token": login_serializer.validated_data["refresh"],
+                        "user": user_serializer.data,
+                        "message": "Successful request",
+                    },
+                    status=status.HTTP_202_ACCEPTED,
+                )
+            return Response(login_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(
+            {"message": "User authentication error"},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
