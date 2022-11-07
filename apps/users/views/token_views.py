@@ -1,34 +1,15 @@
-from django.contrib.auth import get_user_model, authenticate
+from django.contrib.auth import authenticate
 
 from rest_framework import status
-from rest_framework.viewsets import ModelViewSet
-from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
-from .serializers import (
+from apps.users.serializers import (
     UserAccountSerializer,
     LoginTokenObtainSerializer,
     LoginTokenRefreshSerializer,
 )
-
-
-class UserAccountViewset(ModelViewSet):
-    """
-    User Account Viewset
-    """
-
-    queryset = get_user_model().objects.all()
-    serializer_class = UserAccountSerializer
-
-    def get_permissions(self):
-        if self.action == "create":
-            permission_classes = [AllowAny]
-        else:
-            permission_classes = [IsAuthenticated]
-
-        return [permission() for permission in permission_classes]
 
 
 class LoginTokenObtainView(TokenObtainPairView):

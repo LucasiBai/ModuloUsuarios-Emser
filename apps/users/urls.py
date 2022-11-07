@@ -1,7 +1,7 @@
 from django.urls import path
 
 from .routers import router
-from .views import LoginTokenObtainView, LoginTokenRefreshView
+from .views.token_views import LoginTokenObtainView, LoginTokenRefreshView
 
 
 app_name = "users"

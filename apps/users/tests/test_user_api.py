@@ -40,6 +40,7 @@ class PublicUsersAPITests(TestCase):
             "email": "test@mitest.com",
             "password": "testpassword",  # Mock user create data
             "first_name": "Test",
+            "last_name": "Testi",
         }
 
         res = self.client.post(CREATE_USER_URL, payload)
