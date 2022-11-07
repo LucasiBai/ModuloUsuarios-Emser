@@ -5,9 +5,13 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
-from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
-from .serializers import UserAccountSerializer, LoginTokenObtainSerializer
+from .serializers import (
+    UserAccountSerializer,
+    LoginTokenObtainSerializer,
+    LoginTokenRefreshSerializer,
+)
 
 
 class UserAccountViewset(ModelViewSet):
@@ -53,4 +57,24 @@ class LoginTokenObtainView(TokenObtainPairView):
         return Response(
             {"message": "User authentication error"},
             status=status.HTTP_400_BAD_REQUEST,
+        )
+
+
+class LoginTokenRefreshView(TokenRefreshView):
+    serializer_class = LoginTokenRefreshSerializer
+
+    def post(self, request, *args, **kwargs):
+        refresh_token = request.data.get("refresh-token", "")
+
+        serializer = self.serializer_class(data={"refresh": refresh_token})
+        if serializer.is_valid():
+            return Response(
+                {
+                    "updated-token": serializer.validated_data["access"],
+                    "message": "Successful request",
+                },
+                status=status.HTTP_202_ACCEPTED,
+            )
+        return Response(
+            {"message": "Invalid refresh token"}, status=status.HTTP_400_BAD_REQUEST
         )

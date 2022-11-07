@@ -5,9 +5,13 @@ from django.urls import reverse
 from rest_framework.test import APIClient
 from rest_framework import status
 
+from rest_framework_simplejwt.exceptions import TokenError
+
 
 CREATE_USER_URL = reverse("users:user_account-list")  # create user API url
+
 TOKEN_URL = reverse("users:user_token_obtain")  # user token url
+TOKEN_REFRESH_URL = reverse("users:user_token_refresh")  # user token refresh url
 
 
 def create_user(**kwargs):
@@ -152,6 +156,40 @@ class PublicUsersAPITests(TestCase):
 
         self.assertNotIn("token", res.data)
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_refresh_token_success(self):
+        """
+        Tests if can refresh the JWT
+        """
+        payload = {
+            "email": "test@.com",
+            "password": "testpassword",  # Mock user create data
+            "first_name": "Test",
+        }
+        create_user(**payload)
+
+        res_token = self.client.post(TOKEN_URL, payload)
+        refresh_token = res_token.data["refresh-token"]
+
+        res_refresh = self.client.post(
+            TOKEN_REFRESH_URL, {"refresh-token": refresh_token}
+        )
+
+        self.assertIn("updated-token", res_refresh.data)
+        self.assertIn("message", res_refresh.data)
+
+        self.assertEqual(res_refresh.status_code, status.HTTP_202_ACCEPTED)
+
+    def test_invalid_refresh_token(self):
+        """
+        Tests if refresh token raise exception
+        """
+
+        with self.assertRaises(TokenError):
+            self.client.post(
+                TOKEN_REFRESH_URL,
+                {"refresh-token": "invalid.token.id"},
+            )
 
 
 # class PrivateUsersAPITests(TestCase):
