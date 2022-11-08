@@ -13,6 +13,10 @@ from apps.users.serializers import (
 
 
 class LoginTokenObtainView(TokenObtainPairView):
+    """
+    Obtain JWT
+    """
+
     serializer_class = LoginTokenObtainSerializer
 
     def post(self, request, *args, **kwargs):
@@ -42,6 +46,10 @@ class LoginTokenObtainView(TokenObtainPairView):
 
 
 class LoginTokenRefreshView(TokenRefreshView):
+    """
+    Refresh JWT
+    """
+
     serializer_class = LoginTokenRefreshSerializer
 
     def post(self, request, *args, **kwargs):

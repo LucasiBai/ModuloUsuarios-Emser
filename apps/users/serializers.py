@@ -10,7 +10,7 @@ from rest_framework_simplejwt.serializers import (
 
 class UserAccountSerializer(serializers.ModelSerializer):
     """
-    Serializers for User model
+    Serializer for User model
     """
 
     class Meta:
@@ -38,8 +38,12 @@ class UserAccountSerializer(serializers.ModelSerializer):
 
 
 class LoginTokenObtainSerializer(TokenObtainPairSerializer):
-    pass
+    """
+    Serializer to obtain JWT
+    """
 
 
 class LoginTokenRefreshSerializer(TokenRefreshSerializer):
-    pass
+    """
+    Serializer to refresh JWT
+    """

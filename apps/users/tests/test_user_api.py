@@ -9,6 +9,7 @@ from rest_framework_simplejwt.exceptions import TokenError
 
 
 CREATE_USER_URL = reverse("users:user_account-list")  # create user API url
+ME_URL = reverse("users:me")
 
 TOKEN_URL = reverse("users:user_token_obtain")  # user token url
 TOKEN_REFRESH_URL = reverse("users:user_token_refresh")  # user token refresh url
@@ -23,7 +24,7 @@ def create_user(**kwargs):
 
 class PublicUsersAPITests(TestCase):
     """
-    Tests Public user api
+    Tests public users api
     """
 
     def setUp(self):
@@ -106,6 +107,7 @@ class PublicUsersAPITests(TestCase):
             "password": "testpassword",  # Mock user create data
             "first_name": "Test",
         }
+
         user = create_user(**payload)
 
         res = self.client.post(TOKEN_URL, payload)
@@ -122,10 +124,12 @@ class PublicUsersAPITests(TestCase):
         """
         Tests if JWT was'nt created without invalid credentials
         """
+
         create_user(email="test@test.com", password="test123")
+
         payload = {
             "email": "test@test.com",
-            "password": "wrongpassword",  # Mock user create data
+            "password": "wrongpassword",  # Mock wrong user password data
             "first_name": "Test",
         }
 
@@ -140,7 +144,7 @@ class PublicUsersAPITests(TestCase):
         """
         payload = {
             "email": "test@test.com",
-            "password": "wrongpassword",  # Mock user create data
+            "password": "Test123",  # Mock user data
             "first_name": "Test",
         }
 
@@ -192,15 +196,70 @@ class PublicUsersAPITests(TestCase):
                 {"refresh-token": "invalid.token.id"},
             )
 
+    def test_retrieve_user_unauthorized(self):
+        """
+        Tests if rejects the unauthorized data
+        """
 
-# class PrivateUsersAPITests(TestCase):
-#     """
-#     Tests Private user api
-#     """
+        res = self.client.get(ME_URL)
 
-#     def setUp(self):
-#         self.client = APIClient()
+        self.assertNotIn("email", res.data)
+        self.assertNotIn("username", res.data)
+        self.assertNotIn("first_name", res.data)
+        self.assertNotIn("last_name", res.data)
 
-#         self.user = create_user(
-#             first_name="Test", email="testuser@test.com", password="testpassword123"
-#         )
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
+
+class PrivateUsersAPITests(TestCase):
+    """
+    Tests private users api
+    """
+
+    def setUp(self):
+        self.client = APIClient()
+
+        self.user = create_user(email="test@test.com", password="test123")
+        self.client.force_authenticate(user=self.user)
+
+    def test_retrieve_user_success(self):
+        """
+        Tests gets the user data
+        """
+        res = self.client.get(ME_URL)
+
+        self.assertEqual(res.data["email"], self.user.email)
+        self.assertEqual(res.data["first_name"], self.user.first_name)
+
+        self.assertNotIn("password", res.data)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+    def test_post_me_not_allowed(self):
+        """
+        Tests if posts is not allowed
+        """
+        res = self.client.post(
+            ME_URL, {"email": "test@email.com", "password": "test123"}
+        )
+
+        self.assertEqual(res.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def test_update_user_data_succesful(self):
+        """
+        Tests if authorized user can update profile
+        """
+        payload = {
+            "email": "newemail@test.com",
+            "password": "newpassword",  # Mock user data
+            "first_name": "NewName",
+        }
+
+        res = self.client.patch(ME_URL, payload)
+        self.user.refresh_from_db()
+
+        self.assertEqual(res.data["email"], payload["email"])
+        self.assertEqual(res.data["first_name"], payload["first_name"])
+        self.assertTrue(self.user.check_password(payload["password"]))
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
