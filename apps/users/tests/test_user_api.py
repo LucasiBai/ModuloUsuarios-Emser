@@ -9,7 +9,7 @@ from rest_framework_simplejwt.exceptions import TokenError
 
 
 CREATE_USER_URL = reverse("users:user_account-list")  # create user API url
-ME_URL = reverse("users:me")
+ME_URL = reverse("users:user_account-get-me-data")  # get user API url
 
 TOKEN_URL = reverse("users:user_token_obtain")  # user token url
 TOKEN_REFRESH_URL = reverse("users:user_token_refresh")  # user token refresh url
@@ -219,14 +219,20 @@ class PrivateUsersAPITests(TestCase):
     def setUp(self):
         self.client = APIClient()
 
-        self.user = create_user(email="test@test.com", password="test123")
+        self.user_data = {"email": "test@test.com", "password": "test123"}
+
+        self.user = create_user(**self.user_data)
         self.client.force_authenticate(user=self.user)
+
+        res_token = self.client.post(TOKEN_URL, self.user_data)  # get user token
+        self.user_token = res_token.data["token"]
 
     def test_retrieve_user_success(self):
         """
         Tests gets the user data
         """
-        res = self.client.get(ME_URL)
+
+        res = self.client.get(ME_URL, HTTP_AUTHORIZATION=f"Bearer {self.user_token}")
 
         self.assertEqual(res.data["email"], self.user.email)
         self.assertEqual(res.data["first_name"], self.user.first_name)
@@ -240,7 +246,8 @@ class PrivateUsersAPITests(TestCase):
         Tests if posts is not allowed
         """
         res = self.client.post(
-            ME_URL, {"email": "test@email.com", "password": "test123"}
+            ME_URL,
+            {"email": "test@email.com", "password": "test123"},
         )
 
         self.assertEqual(res.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
@@ -253,9 +260,12 @@ class PrivateUsersAPITests(TestCase):
             "email": "newemail@test.com",
             "password": "newpassword",  # Mock user data
             "first_name": "NewName",
+            "last_name": "NewLast",
         }
 
-        res = self.client.patch(ME_URL, payload)
+        res = self.client.patch(
+            ME_URL, payload, HTTP_AUTHORIZATION=f"Bearer {self.user_token}"
+        )
         self.user.refresh_from_db()
 
         self.assertEqual(res.data["email"], payload["email"])
