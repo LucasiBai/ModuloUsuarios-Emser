@@ -30,4 +30,35 @@ class UserAdmin(BaseUserAdmin):
     )
 
 
+class ProjectAdmin(admin.ModelAdmin):
+    ordering = ["id"]
+    list_display = ["name", "is_active"]
+
+    fieldsets = ((None, {"fields": ["name"]}),)
+
+    add_fieldsets = ((None, {"classes": ("wide",), "fields": ["name"]}),)
+
+
+class ProjectUserAdmin(admin.ModelAdmin):
+    ordering = ["id"]
+    list_display = ["user_id", "project_id", "is_active"]
+
+    fieldsets = ((None, {"fields": ["user_id", "project_id"]}),)
+
+    add_fieldsets = (
+        (
+            None,
+            {
+                "classes": ("wide",),
+                "fields": [
+                    "user_id",
+                    "project_id",
+                ],
+            },
+        ),
+    )
+
+
 admin.site.register(models.UserAccount, UserAdmin)
+admin.site.register(models.Project, ProjectAdmin)
+admin.site.register(models.ProjectUser, ProjectUserAdmin)

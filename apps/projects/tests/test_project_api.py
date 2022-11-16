@@ -5,7 +5,8 @@ from django.contrib.auth import get_user_model
 from rest_framework.test import APIClient
 from rest_framework import status
 
-from db.models import Project, ProjectUser
+from db.models import Project
+
 from apps.users.tests.test_user_api import TOKEN_URL
 
 MOCK_PROJECTS = [
@@ -19,11 +20,17 @@ MOCK_PROJECTS = [
 PROJECTS_LIST_URL = reverse("projects:project-list")
 
 
-def get_random_projects_detail_url(project_list):
+def get_first_project_detail_url(project_list):
+    """
+    Gets the reverse url of the first project in list
+    """
     return reverse("projects:project-detail", kwargs={"pk": project_list[0].id})
 
 
 def post_projects():
+    """
+    Posts user list into database
+    """
     project_list = []
     for project in MOCK_PROJECTS:
         pr = Project.objects.create_project(**project)
@@ -55,7 +62,7 @@ class PublicProjectsAPITests(TestCase):
         """
         projects = post_projects()
 
-        detail_url = get_random_projects_detail_url(projects)
+        detail_url = get_first_project_detail_url(projects)
 
         payload = {"name": "NewTestName"}
 
@@ -79,7 +86,7 @@ class PublicProjectsAPITests(TestCase):
         """
         projects = post_projects()
 
-        detail_url = get_random_projects_detail_url(projects)
+        detail_url = get_first_project_detail_url(projects)
 
         res_detail = self.client.delete(detail_url)
 
@@ -130,7 +137,7 @@ class PrivateSuperuserProjectsAPITests(TestCase):
 
         payload = {"name": "NewTestName"}
 
-        detail_url = get_random_projects_detail_url(projects)
+        detail_url = get_first_project_detail_url(projects)
 
         res = self.client.put(
             detail_url, payload, HTTP_AUTHORIZATION=f"Bearer {self.user_token}"
@@ -159,7 +166,7 @@ class PrivateSuperuserProjectsAPITests(TestCase):
         """
         projects = post_projects()
 
-        detail_url = get_random_projects_detail_url(projects)
+        detail_url = get_first_project_detail_url(projects)
 
         res_detail = self.client.delete(
             detail_url, HTTP_AUTHORIZATION=f"Bearer {self.user_token}"
@@ -209,9 +216,9 @@ class PrivateAdminProjectsAPITests(TestCase):
         """
         projects = post_projects()
 
-        detail_url = get_random_projects_detail_url(projects)
+        detail_url = get_first_project_detail_url(projects)
 
-        payload = {"name": "NewTestName"}
+        payload = {"name": "NewTestRejectName"}
 
         res = self.client.put(
             detail_url, payload, HTTP_AUTHORIZATION=f"Bearer {self.user_token}"
@@ -239,7 +246,7 @@ class PrivateAdminProjectsAPITests(TestCase):
         """
         projects = post_projects()
 
-        detail_url = get_random_projects_detail_url(projects)
+        detail_url = get_first_project_detail_url(projects)
 
         res_detail = self.client.delete(
             detail_url, HTTP_AUTHORIZATION=f"Bearer {self.user_token}"

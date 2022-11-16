@@ -106,12 +106,15 @@ class Project(models.Model):
 
     objects = ProjectManager()
 
+    def __str__(self):
+        return self.name
+
 
 # Project User Model
 class ProjectUserManager(models.Manager):
     def create_relation(self, user_id=None, project_id=None, **kwargs):
         """
-        Creates the relation between project and user
+        Creates the relation between user and project
         """
         if not user_id or not project_id:
             raise ValueError("Relation must have a 'user_id' and 'project_id'")
