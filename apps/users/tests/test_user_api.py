@@ -10,6 +10,7 @@ from rest_framework_simplejwt.exceptions import TokenError
 
 CREATE_USER_URL = reverse("users:user_account-list")  # create user API url
 ME_URL = reverse("users:user_account-get-me-data")  # get user API url
+RESET_PASSWORD_URL = reverse("users:reset_password")  # reset user password url
 
 TOKEN_URL = reverse("users:user_token_obtain")  # user token url
 TOKEN_REFRESH_URL = reverse("users:user_token_refresh")  # user token refresh url
@@ -42,6 +43,7 @@ class PublicUsersAPITests(TestCase):
             "password": "testpassword",  # Mock user create data
             "first_name": "Test",
             "last_name": "Testi",
+            "username": "TestUsername",
         }
 
         res = self.client.post(CREATE_USER_URL, payload)
@@ -210,6 +212,32 @@ class PublicUsersAPITests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
+    def test_reset_password_successful(self):
+        """
+        Tests if receives password reset
+        """
+        payload = {
+            "email": "test@gmail.com",
+            "password": "testpassword",  # Mock user create data
+            "first_name": "Test",
+        }
+        create_user(**payload)
+
+        res = self.client.post(RESET_PASSWORD_URL, {"email": payload["email"]})
+
+        self.assertEqual(status.HTTP_200_OK, res.status_code)
+        self.assertIn("message", res.data)
+
+    def test_reset_password_invalid_email(self):
+        """
+        Tests if raise an error when email is invalid
+        """
+
+        res = self.client.post(RESET_PASSWORD_URL, {"email": "testemail@gmail.com"})
+
+        self.assertEqual(status.HTTP_404_NOT_FOUND, res.status_code)
+        self.assertIn("email", res.data)
+
 
 class PrivateUsersAPITests(TestCase):
     """
@@ -219,7 +247,11 @@ class PrivateUsersAPITests(TestCase):
     def setUp(self):
         self.client = APIClient()
 
-        self.user_data = {"email": "test@test.com", "password": "test123"}
+        self.user_data = {
+            "email": "test@test.com",
+            "password": "test123",
+            "username": "TestUsername",
+        }
 
         self.user = create_user(**self.user_data)
         self.client.force_authenticate(user=self.user)
@@ -261,6 +293,7 @@ class PrivateUsersAPITests(TestCase):
             "password": "newpassword",  # Mock user data
             "first_name": "NewName",
             "last_name": "NewLast",
+            "username": "NewUser",
         }
 
         res = self.client.patch(

@@ -19,12 +19,7 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
 ]
 
-PROJECT_APPS = [
-    "db",
-    "apps.users",
-]
-
-ECOMMERCE_APPS = []
+PROJECT_APPS = ["db", "apps.users", "apps.projects"]
 
 THIRD_PARTY_APPS = [
     "corsheaders",
@@ -33,7 +28,7 @@ THIRD_PARTY_APPS = [
     "rest_framework_simplejwt",
 ]
 
-INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + ECOMMERCE_APPS + THIRD_PARTY_APPS
+INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + THIRD_PARTY_APPS
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
