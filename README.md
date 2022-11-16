@@ -1,44 +1,52 @@
 <h1 align="center">
   <br>
-  <a href="https://www.lacandelailuminacionyelectricidad.com/">
-  <img src="https://lirp.cdn-website.com/627ffa0a/dms3rep/multi/opt/2317086-logo-01-8f14e-237w.jpg" alt="Markdownify" width="200"></a>
+  <a href="http://www.emser.net/">
+  <img src="https://media.cylex.com.ar/companies/1111/5565/logo/logo.jpg" alt="Emser" width="200"></a>
   <br>
-  Products Rest API
+  EMSER TEST
   <br>
 </h1>
-
-<h4 align="center">A REST API for an Ecommerce maded with <a href="https://reactjs.org/">ReactJS</a>.</h4>
+<h4 align="center">A FULL STACK USER MODULE FOR EMSER USING <a href="https://angular.io/">ANGULAR</a> and <a href="https://www.djangoproject.com/">DJANGO</a>.</h4>
 
 ## How to Use:
 
-To clone and run this application, you'll need Python ^3.8 and pip installed on your computer.
+To clone and run this application you'll need Git, PostgreSQL, Node.js, Python^3.8 and pip installed on your computer.
 
 - `git clone https://github.com/LucasiBai/LaCandelaBaigorria.git` to download the code.
 - `cd LaCandelaBaigorria` go into the repository.
-- `pip install -r requirements.txt` to install all the dependencies.
+- `npm install` to install node dependencies
+- `pip install -r requirements.txt` to install python dependencies.
+- Create an .env file in core/settiings with:
+
+```python
+    SECRET_KEY=-!x3zqt9#4(sm0+!1wi+*4&^h*1q4tt2@%+p&td%9xnrhsro8o
+    DEBUG=True
+
+    DATABASE_URL=postgres://(postgresUser):(postgresPassword)@127.0.0.1:5432/(dbName)
+```
+
+- `python3 or py manage.py migrate` to migrate database
 - `python3 or py manage.py runserver` to initialize the App.
 
 ## Information:
 
-This is the backend of an ecommerce maded for "La Candela" ilumination shop in Mortero, Córdoba, Argentina.
+This is a fullstack application for a technical test for Emser.
 
 ## Deploy Link:
 
-https://lacandelabaigorria.vercel.app/
+...
 
 ## Roots:
 
-- Home: `/`
-- Category: `/category/:categoryName`
-- Products: `/item/:itemId`
-- Cart: `/cart`
+...
 
 ## Tools:
 
+- Angular
 - Django
 - Django Rest Framework
 - Django Tests
 
 ## Example:
-![screen2](https://user-images.githubusercontent.com/99888705/199101529-93555998-36da-4787-ac13-7f4fe1d4784c.gif)
 
+...

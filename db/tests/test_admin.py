@@ -19,6 +19,7 @@ class ModelTest(TestCase):
             email="testuser@mitest.com",
             password="pass1234",
             first_name="TestUserName",  # Creating Normal User
+            username="test",
         )
 
     def test_user_listed(self):

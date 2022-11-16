@@ -10,14 +10,23 @@ class UserAdmin(BaseUserAdmin):
     list_display = ["email", "first_name", "last_name"]
 
     fieldsets = (
-        (None, {"fields": ["email", "password"]}),
-        (gettext("Personal Info"), {"fields": ["first_name", "last_name"]}),
-        (gettext("Permissions"), {"fields": ["is_active", "is_staff", "is_superuser"]}),
+        (None, {"fields": ["username", "email", "password"]}),
+        (
+            gettext("Personal Info"),
+            {"fields": ["first_name", "last_name", "phone_number"]},
+        ),
+        (gettext("Permissions"), {"fields": ["is_active", "user_type"]}),
         (gettext("Important Dates"), {"fields": ["last_login"]}),
     )
 
     add_fieldsets = (
-        (None, {"classes": ("wide",), "fields": ("email", "password1", "password2")}),
+        (
+            None,
+            {
+                "classes": ("wide",),
+                "fields": ("email", "username", "password1", "password2", "user_type"),
+            },
+        ),
     )
 
 
