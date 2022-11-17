@@ -36,13 +36,38 @@ This is a fullstack application for a technical test for Emser.
 
 ...
 
-## Roots:
+## Frontend Roots:
 
 ...
+
+## Backend Roots:
+
+### Admin:
+
+- `/admin/` admin site
+
+### User Api Roots:
+
+- `api/users/` api-root
+
+- `api/users/login/` user login
+- `api/users/login/refresh/` user login refresh
+- `api/users/reset-password/` user refresh password
+- `api/users/accounts/` user list
+- `api/users/accounts/(id)` user detail
+- `api/users/accounts/me/` authorized user detail
+
+### Project Api Roots
+
+- `api/projects/` project list
+- `api/projects/(id)/` project detail
+- `api/projects-user/` project-user relation list
+- `api/projects-user/(id)/` project-user relation detail
 
 ## Tools:
 
 - Angular
+- Angular Material
 - Django
 - Django Rest Framework
 - Django Tests

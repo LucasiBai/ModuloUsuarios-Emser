@@ -1,1 +1,25 @@
-<p>login-container works!</p>
+<main>
+  <h2>Login</h2>
+  <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+    <label
+      *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.errors?.['required'] "
+      >Campo Requerido!</label
+    >
+    <label
+      *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.errors?.['email'] "
+      >El valor ingresado debe ser un email válido</label
+    >
+    <input type="text" placeholder="Email" formControlName="email" required />
+    <label
+      *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.errors?.['required'] "
+      >Campo Requerido!</label
+    >
+    <input
+      type="password"
+      placeholder="Contraseña"
+      formControlName="password"
+      required
+    />
+    <input type="submit" />
+  </form>
+</main>
