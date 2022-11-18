@@ -22,6 +22,7 @@ const routes: Routes = [
   {
     path: 'tables/:category',
     component: ItemListContainerComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: '**',

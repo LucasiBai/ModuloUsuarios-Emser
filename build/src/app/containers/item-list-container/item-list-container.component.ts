@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 import { APIRequestsService } from 'src/app/services/api-requests.service';
+import { FactoryFieldsService } from 'src/app/services/factory-fields.service';
 
 @Component({
   selector: 'app-item-list-container',
@@ -8,6 +10,9 @@ import { APIRequestsService } from 'src/app/services/api-requests.service';
   styleUrls: ['./item-list-container.component.css'],
 })
 export class ItemListContainerComponent {
+  category!: string;
+  title: string = 'User';
+
   item_list!: any[];
   fields: any[] = [
     { field: 'id', as: 'Id', type: null },
@@ -27,15 +32,37 @@ export class ItemListContainerComponent {
     { field: 'user_type', as: 'Type', type: 'radio' },
   ];
 
-  constructor(private apiRequest: APIRequestsService) {
+  constructor(
+    private apiRequest: APIRequestsService,
+    private factoryFieldsService: FactoryFieldsService,
+    private readonly route: ActivatedRoute
+  ) {
     this.chargeData();
   }
 
-  ngOnChange() {}
+  ngOnChange() {
+    this.chargeData();
+  }
 
   public chargeData() {
-    this.apiRequest.get('users/accounts/').subscribe((res: any) => {
-      this.item_list = res.sort((a: any, b: any) => a.id - b.id);
-    });
+    this.route.params.subscribe(({ category }) => (this.category = category));
+    if (!this.category || this.category === 'users') {
+      this.apiRequest.get('users/accounts/').subscribe((res: any) => {
+        this.item_list = res.sort((a: any, b: any) => a.id - b.id);
+      });
+    } else {
+      this.fields = this.factoryFieldsService.getFields(this.category);
+      this.createFields = this.factoryFieldsService.getCreateFields(
+        this.category
+      );
+      this.title = this.factoryFieldsService.getTitle(this.category);
+
+      const url: string = this.factoryFieldsService.getUrl(this.category);
+
+      this.apiRequest.get(url).subscribe((res: any) => {
+        this.item_list = res.sort((a: any, b: any) => a.id - b.id);
+        console.log(res);
+      });
+    }
   }
 }

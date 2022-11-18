@@ -24,7 +24,7 @@ export class AuthService {
     private httpClient: HttpClient
   ) {}
 
-  login(user: UserInterface): Observable<JwtResponseInterface> {
+  public login(user: UserInterface): Observable<JwtResponseInterface> {
     return this.httpClient
       .post<JwtResponseInterface>(`${this.AUTH_SERVER}users/login/`, user)
       .pipe(
@@ -36,7 +36,7 @@ export class AuthService {
       );
   }
 
-  logout() {
+  public logout() {
     this.token = '';
     this.cookieService.delete('token');
     this.cookieService.delete('refresh-token');
@@ -45,7 +45,7 @@ export class AuthService {
     this.cookieService.delete('user');
   }
 
-  refreshToken(): Observable<UpdatedTokenInterface> {
+  public refreshToken(): Observable<UpdatedTokenInterface> {
     const refreshToken = this.cookieService.get('refresh-token');
     return this.httpClient
       .post<UpdatedTokenInterface>(`${this.AUTH_SERVER}users/login/refresh/`, {
@@ -64,6 +64,14 @@ export class AuthService {
           }
         })
       );
+  }
+
+  public getUserData() {
+    return JSON.parse(this.cookieService.get('user'));
+  }
+
+  public getUserPermises() {
+    return this.getUserData().user_type;
   }
 
   private saveToken(apiResponse: JwtResponseInterface): void {

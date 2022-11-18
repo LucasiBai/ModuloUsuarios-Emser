@@ -1,11 +1,11 @@
 <header>
   <app-nav-bar></app-nav-bar>
 </header>
-<main>
-  <p>item-list-container works!</p>
+<main class="row">
   <app-item-list
     [item_list]="item_list"
     [fields]="fields"
+    [title]="title"
     [createFields]="createFields"
     [isActiveField]="true"
     [settingsField]="true"

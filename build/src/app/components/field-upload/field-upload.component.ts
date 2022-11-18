@@ -3,6 +3,7 @@ import { Component, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ItemListContainerComponent } from 'src/app/containers/item-list-container/item-list-container.component';
 import { APIRequestsService } from 'src/app/services/api-requests.service';
+import { FactoryFieldsService } from 'src/app/services/factory-fields.service';
 import { ItemListComponent } from '../item-list/item-list.component';
 
 @Component({
@@ -21,7 +22,9 @@ export class FieldUploadComponent {
   constructor(
     private readonly fb: FormBuilder,
     private apiRequest: APIRequestsService,
-    private itemListContainer: ItemListContainerComponent
+    private factoryFields: FactoryFieldsService,
+    private itemListContainer: ItemListContainerComponent,
+    private itemList: ItemListComponent
   ) {}
 
   ngOnChanges(): void {
@@ -29,26 +32,35 @@ export class FieldUploadComponent {
   }
 
   public uploadData() {
-    const newValues = { ...this.uploadFieldForm.value };
+    if (this.itemList.isSuperuser) {
+      const newValues = { ...this.uploadFieldForm.value };
 
-    if (this.title === 'User') {
-      if (newValues.user_type == 'superuser') {
-        newValues.is_superuser = true;
-      } else if (newValues.user_type == 'admin') {
-        newValues.is_superuser = false;
-      }
+      if (this.title === 'User') {
+        if (newValues.user_type == 'superuser') {
+          newValues.is_superuser = true;
+        } else if (newValues.user_type == 'admin') {
+          newValues.is_superuser = false;
+        }
 
-      if (newValues['password'] !== newValues['repeatPassword']) {
-        this.differentPasswordError = true;
-        return;
+        if (newValues['password'] !== newValues['repeatPassword']) {
+          this.differentPasswordError = true;
+          return;
+        } else {
+          this.differentPasswordError = false;
+          delete newValues['repeatPassword'];
+        }
+
+        this.apiRequest.post(`users/accounts/`, newValues).subscribe((res) => {
+          this.itemListContainer.chargeData();
+        });
       } else {
-        this.differentPasswordError = false;
-        delete newValues['repeatPassword'];
+        const url = this.factoryFields.getUrl(this.itemListContainer.category);
+        this.apiRequest.post(url, newValues).subscribe((res) => {
+          this.itemListContainer.chargeData();
+        });
       }
-
-      this.apiRequest.post(`users/accounts/`, newValues).subscribe((res) => {
-        this.itemListContainer.chargeData();
-      });
+    } else {
+      this.itemList.isNotSuperUserError();
     }
   }
 

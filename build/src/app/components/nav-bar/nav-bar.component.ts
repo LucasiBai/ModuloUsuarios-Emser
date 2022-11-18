@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./nav-bar.component.css'],
 })
 export class NavBarComponent {
+  user: any = this.authService.getUserData();
+
   constructor(private authService: AuthService, private router: Router) {}
   public logout() {
     this.authService.logout();

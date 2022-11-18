@@ -17,12 +17,26 @@
   [createFields]="createFields"
 ></app-field-upload>
 
-<label *ngIf="isCurrentUserError"
-  >The user cannot deactivate his own account</label
+<!-- Errors -->
+<div
+  class="alert alert-danger mt-1 mb-1"
+  role="alert"
+  *ngIf="isCurrentUserError"
 >
+  The user<b> cannot desactivate</b> his own account
+</div>
+
+<div
+  class="alert alert-danger mt-1 mb-1"
+  role="alert"
+  *ngIf="_isNotSuperUserError"
+>
+  <b>Only superusers</b> can modify data
+</div>
 
 <!-- Table -->
-<table class="table table-light table-striped">
+
+<table class="table table-light table-striped mt-3 mb-3">
   <thead>
     <tr>
       <th *ngFor="let field of fields">{{ field.as }}</th>
@@ -35,7 +49,10 @@
   <tbody>
     <tr *ngFor="let item of item_list">
       <td *ngFor="let field of fields">
-        {{ item[field.field] }}
+        <span *ngIf="!field.child">{{ item[field.field] }}</span>
+        <span *ngIf="field.child">{{
+          item[field.field][field.childName]
+        }}</span>
       </td>
 
       <!-- Active Field Body -->

@@ -24,26 +24,47 @@
         <form [formGroup]="editFieldForm">
           <div *ngFor="let field of fields">
             <div *ngIf="field.type !== null">
-              <label
-                *ngIf="editFieldForm.get('{{field.field}}')?.touched && editFieldForm.get('{{field.field}}')?.errors?.['required']"
-                >Required field</label
-              ><label class="fs-6 fw-semibold">{{ field.as }}:</label>
-              <input
-                *ngIf="field.type !== 'radio'"
-                type="{{ field.type }}"
-                placeholder="{{ field.as }}"
-                formControlName="{{ field.field }}"
-              />
-              <div *ngIf="field.type === 'radio'">
-                <input
-                  type="radio"
-                  value="superuser"
-                  formControlName="user_type"
-                />
-                <label>Superuser</label>
+              <div class="d-flex flex-column mt-3 mb-3">
+                <div
+                  class="alert alert-danger mt-1 mb-1"
+                  role="alert"
+                  *ngIf="editFieldForm.get('{{field.field}}')?.touched && editFieldForm.get('{{field.field}}')?.errors?.['required']"
+                >
+                  <label>Required field</label>
+                </div>
 
-                <input type="radio" value="admin" formControlName="user_type" />
-                <label>Admin</label>
+                <label class="fs-6 fw-semibold mb-1">{{ field.as }}:</label>
+                <input
+                  *ngIf="field.type !== 'radio'"
+                  type="{{ field.type }}"
+                  placeholder="{{ field.as }}"
+                  formControlName="{{ field.field }}"
+                />
+              </div>
+
+              <div
+                *ngIf="field.type === 'radio' && title === 'User'"
+                class="d-flex row"
+              >
+                <div class="col-3">
+                  <input
+                    type="radio"
+                    value="superuser"
+                    formControlName="user_type"
+                    class="me-1"
+                  />
+                  <label>Superuser</label>
+                </div>
+
+                <div class="col-3">
+                  <input
+                    type="radio"
+                    value="admin"
+                    formControlName="user_type"
+                    class="me-1"
+                  />
+                  <label>Admin</label>
+                </div>
               </div>
             </div>
           </div>

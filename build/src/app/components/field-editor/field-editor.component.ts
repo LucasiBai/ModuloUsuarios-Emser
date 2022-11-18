@@ -1,7 +1,9 @@
 import { Component, Input } from '@angular/core';
 
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { ItemListContainerComponent } from 'src/app/containers/item-list-container/item-list-container.component';
 import { APIRequestsService } from 'src/app/services/api-requests.service';
+import { FactoryFieldsService } from 'src/app/services/factory-fields.service';
 import { ItemListComponent } from '../item-list/item-list.component';
 
 @Component({
@@ -20,7 +22,9 @@ export class FieldEditorComponent {
   constructor(
     private readonly fb: FormBuilder,
     private apiRequest: APIRequestsService,
-    private itemList: ItemListComponent
+    private factoryFields: FactoryFieldsService,
+    private itemList: ItemListComponent,
+    private itemListContainer: ItemListContainerComponent
   ) {}
 
   ngOnChanges(): void {
@@ -28,21 +32,33 @@ export class FieldEditorComponent {
   }
 
   public updateData() {
-    const newValues = { ...this.editFieldForm.value };
+    if (this.itemList.isSuperuser) {
+      const newValues = { ...this.editFieldForm.value };
 
-    if (this.title === 'User') {
-      if (newValues.user_type == 'superuser') {
-        newValues.is_superuser = true;
-      } else if (newValues.user_type == 'admin') {
-        newValues.is_superuser = false;
+      if (this.title === 'User') {
+        if (newValues.user_type == 'superuser') {
+          newValues.is_superuser = true;
+        } else if (newValues.user_type == 'admin') {
+          newValues.is_superuser = false;
+        }
+
+        this.apiRequest
+          .updateValue(`users/accounts/${this.item.id}/`, newValues)
+          .subscribe((res) => {
+            this.itemList.updateLocalData(this.item.id, newValues);
+            this.itemList.closeFieldEditor();
+          });
+      } else {
+        const url = this.factoryFields.getUrl(this.itemListContainer.category);
+        this.apiRequest
+          .updateValue(`${url}${this.item.id}/`, newValues)
+          .subscribe((res) => {
+            this.itemList.updateLocalData(this.item.id, newValues);
+            this.itemList.closeFieldEditor();
+          });
       }
-
-      this.apiRequest
-        .updateValue(`users/accounts/${this.item.id}/`, newValues)
-        .subscribe((res) => {
-          this.itemList.updateLocalData(this.item.id, newValues);
-          this.itemList.closeFieldEditor();
-        });
+    } else {
+      this.itemList.isNotSuperUserError();
     }
   }
 

@@ -1,25 +1,63 @@
 <main>
-  <h2>Login</h2>
-  <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
-    <label
-      *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.errors?.['required'] "
-      >Required field</label
+  <h2 class="d-flex justify-content-center mt-5 mb-2">Login</h2>
+  <form
+    [formGroup]="loginForm"
+    (ngSubmit)="onLogin()"
+    class="d-flex flex-column align-items-center row"
+  >
+    <div
+      class="alert alert-danger col-md-3 col-sm-9 col-9 row mt-3 mb-3"
+      role="alert"
+      *ngIf="errorsMsg"
     >
-    <label
-      *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.errors?.['email'] "
-      >The value entered must be a valid email address</label
-    >
-    <input type="text" placeholder="Email" formControlName="email" required />
-    <label
-      *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.errors?.['required'] "
-      >Required field</label
-    >
-    <input
-      type="password"
-      placeholder="Contraseña"
-      formControlName="password"
-      required
-    />
-    <input type="submit" />
+      <b>{{ errorsMsg + "." }}</b> The credentials entered are erroneous.
+    </div>
+
+    <div class="col-md-3 col-sm-9 col-9 row mt-3 mb-3">
+      <div
+        class="alert alert-danger"
+        role="alert"
+        *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.errors?.['required'] "
+      >
+        <label class="col-12 m-0 p-1">Required field</label>
+      </div>
+      <div
+        class="alert alert-danger"
+        role="alert"
+        *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.errors?.['email'] "
+      >
+        <label class="col-12 m-0 p-1"
+          >The value entered must be a valid email address</label
+        >
+      </div>
+      <input
+        type="text"
+        placeholder="Email"
+        formControlName="email"
+        required
+        class="col-12"
+      />
+    </div>
+
+    <div class="col-md-3 col-sm-9 col-9 row mt-3 mb-3">
+      <div
+        class="alert alert-danger"
+        role="alert"
+        *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.errors?.['required'] "
+      >
+        <label class="col-12 m-0 p-1">Required field</label>
+      </div>
+      <input
+        type="password"
+        placeholder="Contraseña"
+        formControlName="password"
+        required
+        class="col-12 m-0"
+      />
+    </div>
+
+    <div class="col-md-3 col-sm-9 col-9 row mt-3 mb-3">
+      <input type="submit" class="btn btn-primary col-12" />
+    </div>
   </form>
 </main>

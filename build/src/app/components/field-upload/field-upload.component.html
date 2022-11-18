@@ -1,5 +1,5 @@
 <button
-  class="btn btn-sm btn-success"
+  class="btn btn-sm btn-success mt-4"
   data-bs-toggle="modal"
   data-bs-target="#uploadFieldsModal"
 >
@@ -31,34 +31,63 @@
       <div class="modal-body">
         <form [formGroup]="uploadFieldForm">
           <div *ngFor="let field of createFields">
-            <div *ngIf="field.type !== null">
-              <label
+            <div
+              *ngIf="field.type !== null"
+              class="d-flex flex-column mt-3 mb-3"
+            >
+              <div
+                class="alert alert-danger mt-1 mb-1"
+                role="alert"
                 *ngIf="uploadFieldForm.get(field.field)?.touched && uploadFieldForm.get(field.field)?.errors?.['required']"
-                >Required field</label
-              ><label class="fs-6 fw-semibold">{{ field.as }}:</label>
-              <label *ngIf="differentPasswordError && field.type === 'password'"
-                >Passwords must match</label
               >
-              <label
+                <label>Required field</label>
+              </div>
+
+              <label class="fs-6 fw-semibold mb-1">{{ field.as }}:</label>
+
+              <div
+                class="alert alert-danger mt-1 mb-1"
+                role="alert"
+                *ngIf="differentPasswordError && field.type === 'password'"
+              >
+                <label>Passwords must match</label>
+              </div>
+
+              <div
+                class="alert alert-danger mt-1 mb-1"
+                role="alert"
                 *ngIf="uploadFieldForm.get(field.field)?.touched && uploadFieldForm.get(field.field)?.errors?.['minLength']"
-                >Field must has more than 3 characters</label
               >
+                <label>Field must has more than 3 characters</label>
+              </div>
+
               <input
                 *ngIf="field.type !== 'radio'"
                 type="{{ field.type }}"
                 placeholder="{{ field.as }}"
                 formControlName="{{ field.field }}"
               />
-              <div *ngIf="field.type === 'radio'">
-                <input
-                  type="radio"
-                  value="superuser"
-                  formControlName="user_type"
-                />
-                <label>Superuser</label>
 
-                <input type="radio" value="admin" formControlName="user_type" />
-                <label>Admin</label>
+              <div *ngIf="field.type === 'radio'" class="d-flex row">
+                <div class="col-3">
+                  <input
+                    type="radio"
+                    value="superuser"
+                    formControlName="user_type"
+                    class="me-1"
+                  />
+                  <label>Superuser</label>
+                </div>
+
+                <div class="col-3">
+                  <input
+                    type="radio"
+                    value="admin"
+                    formControlName="user_type"
+                    class="me-1"
+                  />
+                  <label>Admin</label>
+                </div>
               </div>
             </div>
           </div>

@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
 
 import { APIRequestsService } from 'src/app/services/api-requests.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { FactoryFieldsService } from 'src/app/services/factory-fields.service';
 
 import { ItemListContainerComponent } from '../../containers/item-list-container/item-list-container.component';
 
@@ -17,9 +19,13 @@ export class ItemListComponent {
   @Input() isActiveField!: Boolean;
   @Input() settingsField!: Boolean;
 
-  title: string = 'User';
+  @Input() title!: string;
 
   isCurrentUserError: Boolean = false;
+  _isNotSuperUserError: Boolean = false;
+
+  isSuperuser: Boolean =
+    this.authService.getUserPermises() === 'superuser' ? true : false;
 
   askingForDelete: any = { title: '', id: 0 };
 
@@ -28,19 +34,32 @@ export class ItemListComponent {
 
   constructor(
     private apiRequest: APIRequestsService,
-    private itemListContainer: ItemListContainerComponent
+    private factoryField: FactoryFieldsService,
+    private itemListContainer: ItemListContainerComponent,
+    private authService: AuthService
   ) {}
 
   ngOnChange() {}
 
+  public isNotSuperUserError() {
+    this._isNotSuperUserError = true;
+    setTimeout(() => {
+      this._isNotSuperUserError = false;
+    }, 5000);
+  }
+
   // Change is_active status
 
   public updateStatus(id: Number, status: Boolean) {
-    const newStatus = status ? false : true;
+    if (this.isSuperuser) {
+      const newStatus = status ? false : true;
 
-    this.changeStatusApi(id, newStatus);
-    if (!this.isCurrentUserError) {
-      this.changeStatusLocal(id, newStatus);
+      this.changeStatusApi(id, newStatus);
+      if (!this.isCurrentUserError) {
+        this.changeStatusLocal(id, newStatus);
+      }
+    } else {
+      this.isNotSuperUserError();
     }
   }
 
@@ -59,10 +78,12 @@ export class ItemListComponent {
 
   public changeStatusApi(id: any, newStatus: Boolean): any {
     const isCurrentUser = this.apiRequest.isCurrentUser(id);
-    if (!isCurrentUser) {
+    const category = this.itemListContainer.category;
+    if (!isCurrentUser || category !== 'users') {
+      const url = this.factoryField.getUrl(this.itemListContainer.category);
       this.isCurrentUserError = false;
       this.apiRequest
-        .updateValue(`users/accounts/${id}/`, { is_active: newStatus })
+        .updateValue(`${url}${id}/`, { is_active: newStatus })
         .subscribe();
     } else {
       this.isCurrentUserError = true;
@@ -72,15 +93,19 @@ export class ItemListComponent {
   // Delete Item
 
   public askForDelete(item: any) {
-    this.askingForDelete['asking'] = true;
-    this.askingForDelete['title'] = item.username;
+    this.askingForDelete['title'] = item.username || item.name || item.project;
     this.askingForDelete['id'] = item.id;
   }
 
   public deleteRow(id: Number) {
-    this.apiRequest.delete(`users/accounts/${id}/`).subscribe((res) => {
-      this.itemListContainer.chargeData();
-    });
+    if (this.isSuperuser) {
+      const url = this.factoryField.getUrl(this.itemListContainer.category);
+      this.apiRequest.delete(`${url}${id}/`).subscribe((res) => {
+        this.itemListContainer.chargeData();
+      });
+    } else {
+      this.isNotSuperUserError();
+    }
   }
 
   public cancelDeleteAsk() {

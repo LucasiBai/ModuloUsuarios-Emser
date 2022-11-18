@@ -38,7 +38,16 @@ This is a fullstack application for a technical test for Emser.
 
 ## Frontend Roots:
 
-...
+### Tables Roots:
+
+- `tables/users` to go to the user tables
+- `tables/projects` to go to the projects tables
+- `tables/projects-users` to go to the relations tables
+
+### User Roots:
+
+- `/login` to login
+- `/home` to see the user table
 
 ## Backend Roots:
 
@@ -61,8 +70,8 @@ This is a fullstack application for a technical test for Emser.
 
 - `api/projects/` project list
 - `api/projects/(id)/` project detail
-- `api/projects-user/` project-user relation list
-- `api/projects-user/(id)/` project-user relation detail
+- `api/projects-users/` project-user relation list
+- `api/projects-users/(id)/` project-user relation detail
 
 ## Tools:
 

@@ -12,6 +12,8 @@ import { AuthService } from 'src/app/services/auth.service';
 export class LoginContainerComponent {
   loginForm!: FormGroup;
 
+  errorsMsg!: string;
+
   constructor(
     private readonly fb: FormBuilder,
     private authService: AuthService,
@@ -23,9 +25,16 @@ export class LoginContainerComponent {
   }
 
   onLogin(): void {
-    this.authService.login(this.loginForm.value).subscribe((res) => {
-      this.router.navigateByUrl('/home');
-    });
+    this.authService.login(this.loginForm.value).subscribe(
+      (res) => {
+        this.errorsMsg = '';
+        this.router.navigateByUrl('/home');
+      },
+      (errors) => {
+        this.errorsMsg = errors.error.message;
+        console.log(this.errorsMsg);
+      }
+    );
   }
 
   initForm(): FormGroup {
