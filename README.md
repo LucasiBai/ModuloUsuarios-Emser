@@ -37,7 +37,7 @@ This is a fullstack application for a technical test for Emser.
 
 ## Deploy Link:
 
-...
+https://emser-modulo-usuarios.netlify.app
 
 ## Frontend Roots:
 

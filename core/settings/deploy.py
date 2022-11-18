@@ -1,28 +1,30 @@
 from .base import *
 
-DEBUG = env("DEBUG")
+DEBUG = "RENDER" not in os.environ
+
+if not DEBUG:
+    STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+    STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+
+SECRET_KEY = os.environ.get("SECRET_KEY", default=env("SECRET_KEY"))
 
 
 ALLOWED_HOSTS = ["*"]
 
+RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
+
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+
 
 DATABASES = {
-    "default": env.db("DATABASE_URL", default="postgres:///ecommerceDB"),
+    "default": dj_database_url.config(default=env("DATABASE_URL"), conn_max_age=600),
 }
 
-CORS_ORIGIN_WHITELIST = [
-    "http://localhost:4200",
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
-    "http://127.0.0.1:4200",
-]
+CORS_ORIGIN_WHITELIST = ["https://emser-modulo-usuarios.netlify.app"]
 
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:4200",
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
-    "http://127.0.0.1:4200",
-]
+CSRF_TRUSTED_ORIGINS = ["https://emser-modulo-usuarios.netlify.app"]
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
