@@ -1,7 +1,11 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import {
+  HttpClientModule,
+  HTTP_INTERCEPTORS,
+  HttpClient,
+} from '@angular/common/http';
 
 import { CookieService } from 'ngx-cookie-service';
 import { AuthService } from './services/auth.service';
@@ -19,7 +23,12 @@ import { NotFoundPageComponent } from './containers/not-found-page/not-found-pag
 import { FieldEditorComponent } from './components/field-editor/field-editor.component';
 import { AskForDeleteComponent } from './components/ask-for-delete/ask-for-delete.component';
 import { FieldUploadComponent } from './components/field-upload/field-upload.component';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 @NgModule({
   declarations: [
     AppComponent,
@@ -37,6 +46,13 @@ import { FieldUploadComponent } from './components/field-upload/field-upload.com
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient],
+      },
+    }),
   ],
   providers: [
     CookieService,

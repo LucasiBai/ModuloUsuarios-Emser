@@ -23,7 +23,8 @@
   role="alert"
   *ngIf="isCurrentUserError"
 >
-  The user<b> cannot desactivate</b> his own account
+  {{ "The user" | translate }}<b> {{ "cannot desactivate" | translate }}</b>
+  {{ "his own account" | translate }}
 </div>
 
 <div
@@ -31,19 +32,25 @@
   role="alert"
   *ngIf="_isNotSuperUserError"
 >
-  <b>Only superusers</b> can modify data
+  <b>{{ "Only superusers" | translate }}</b> {{ "can modify data" | translate }}
 </div>
 
 <!-- Table -->
 
-<table class="table table-light table-striped mt-3 mb-3">
+<table
+  [attr.class]="
+    darkMode
+      ? 'table table-dark table-striped mt-3 mb-3'
+      : 'table table-light table-striped mt-3 mb-3'
+  "
+>
   <thead>
     <tr>
-      <th *ngFor="let field of fields">{{ field.as }}</th>
+      <th *ngFor="let field of fields">{{ field.as | translate }}</th>
       <!-- Active Field Header -->
-      <th *ngIf="isActiveField">Is Active</th>
+      <th *ngIf="isActiveField">{{ "Is Active" | translate }}</th>
       <!-- Setting Field Header -->
-      <th *ngIf="settingsField">Settings</th>
+      <th *ngIf="settingsField">{{ "Settings" | translate }}</th>
     </tr>
   </thead>
   <tbody>

@@ -1,6 +1,10 @@
-<nav class="navbar bg-light">
+<nav [attr.class]="onDarkMode ? 'navbar bg-dark ' : 'navbar bg-light'">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">User Module</a>
+    <a
+      [attr.class]="onDarkMode ? 'navbar-brand text-light ' : 'navbar-brand'"
+      href="#"
+      >{{ "User Module" | translate }}</a
+    >
     <button
       class="navbar-toggler"
       type="button"
@@ -11,13 +15,20 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div
+      [attr.class]="
+        onDarkMode
+          ? 'offcanvas offcanvas-end text-bg-dark '
+          : 'offcanvas offcanvas-end'
+      "
       class="offcanvas offcanvas-end"
       tabindex="-1"
       id="offcanvasNavbar"
       aria-labelledby="offcanvasNavbarLabel"
     >
       <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">
+          {{ "Menu" | translate }}
+        </h5>
         <button
           type="button"
           class="btn-close"
@@ -29,38 +40,40 @@
         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
           <li class="nav-item">
             <a
-              class="nav-link"
+              [attr.class]="onDarkMode ? 'nav-link text-secondary' : 'nav-link'"
               aria-current="page"
               routerLink="/home"
               [routerLinkActive]="'active'"
-              >Home</a
+              >{{ "Home" | translate }}</a
             >
           </li>
         </ul>
-        <h6 class="offcanvas-title mt-3" id="offcanvasNavbarLabel">Tables:</h6>
+        <h6 class="offcanvas-title mt-3" id="offcanvasNavbarLabel">
+          {{ "Tables:" | translate }}
+        </h6>
         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 mt-2">
           <li class="nav-item">
             <a
-              class="nav-link"
+              [attr.class]="onDarkMode ? 'nav-link text-secondary' : 'nav-link'"
               href="/tables/users"
               [routerLinkActive]="'active'"
-              >Users</a
+              >{{ "Users" | translate }}</a
             >
           </li>
           <li class="nav-item">
             <a
-              class="nav-link"
+              [attr.class]="onDarkMode ? 'nav-link text-secondary' : 'nav-link'"
               href="/tables/projects"
               [routerLinkActive]="'active'"
-              >Projects</a
+              >{{ "Projects" | translate }}</a
             >
           </li>
           <li class="nav-item">
             <a
-              class="nav-link"
+              [attr.class]="onDarkMode ? 'nav-link text-secondary' : 'nav-link'"
               href="/tables/projects-users"
               [routerLinkActive]="'active'"
-              >Projects Users</a
+              >{{ "Projects Users" | translate }}</a
             >
           </li>
         </ul>
@@ -68,13 +81,13 @@
         <div class="d-flex row">
           <div class="d-flex flex-column mr-5 col-6">
             <h6 class="offcanvas-title mt-3" id="offcanvasNavbarLabel">
-              Username:
+              {{ "Username:" | translate }}
             </h6>
             <p>{{ user.username }}</p>
           </div>
           <div class="d-flex flex-column col-6">
             <h6 class="offcanvas-title mt-3" id="offcanvasNavbarLabel">
-              Type:
+              {{ "Type:" | translate }}
             </h6>
             <p>
               {{
@@ -85,12 +98,42 @@
           </div>
         </div>
 
+        <div class="mt-1 mb-3">
+          <div class="form-check form-switch">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              role="switch"
+              id="flexSwitchCheckDefault"
+              [attr.checked]="onDarkMode ? true : null"
+              (change)="setDarkMode($event)"
+            />
+            <label class="form-check-label" for="flexSwitchCheckDefault">{{
+              "Dark Mode" | translate
+            }}</label>
+          </div>
+
+          <div class="form-check form-switch">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              role="switch"
+              id="flexSwitchCheckDefault"
+              [attr.checked]="selectedLanguage === 'es' ? true : null"
+              (change)="changeLanguage($event)"
+            />
+            <label class="form-check-label" for="flexSwitchCheckDefault">{{
+              "Spanish" | translate
+            }}</label>
+          </div>
+        </div>
+
         <button
           type="button"
           class="btn btn-outline-secondary"
           (click)="logout()"
         >
-          Logout
+          {{ "Logout" | translate }}
         </button>
       </div>
     </div>

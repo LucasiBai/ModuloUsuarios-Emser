@@ -1,5 +1,7 @@
-<main>
-  <h2 class="d-flex justify-content-center mt-5 mb-2">Login</h2>
+<main [attr.class]="isDarkMode ? 'bg-dark text-light vh-100' : ''">
+  <h2 class="d-flex justify-content-center pt-5 mb-2">
+    {{ "Login" | translate }}
+  </h2>
   <form
     [formGroup]="loginForm"
     (ngSubmit)="onLogin()"
@@ -10,7 +12,8 @@
       role="alert"
       *ngIf="errorsMsg"
     >
-      <b>{{ errorsMsg + "." }}</b> The credentials entered are erroneous.
+      <b>{{ errorsMsg + "." | translate }}</b>
+      {{ "The credentials entered are erroneous." | translate }}
     </div>
 
     <div class="col-md-3 col-sm-9 col-9 row mt-3 mb-3">
@@ -19,16 +22,16 @@
         role="alert"
         *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.errors?.['required'] "
       >
-        <label class="col-12 m-0 p-1">Required field</label>
+        <label class="col-12 m-0 p-1">{{ "Required field" | translate }}</label>
       </div>
       <div
         class="alert alert-danger"
         role="alert"
         *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.errors?.['email'] "
       >
-        <label class="col-12 m-0 p-1"
-          >The value entered must be a valid email address</label
-        >
+        <label class="col-12 m-0 p-1">{{
+          "The value entered must be a valid email address" | translate
+        }}</label>
       </div>
       <input
         type="text"
@@ -45,11 +48,11 @@
         role="alert"
         *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.errors?.['required'] "
       >
-        <label class="col-12 m-0 p-1">Required field</label>
+        <label class="col-12 m-0 p-1">{{ "Required field" | translate }}</label>
       </div>
       <input
         type="password"
-        placeholder="Contraseña"
+        placeholder="Password"
         formControlName="password"
         required
         class="col-12 m-0"

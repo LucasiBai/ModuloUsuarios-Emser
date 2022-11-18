@@ -1,9 +1,9 @@
 <button
-  class="btn btn-sm btn-success mt-4"
+  class="btn btn-sm btn-success mt-4 ms-2"
   data-bs-toggle="modal"
   data-bs-target="#uploadFieldsModal"
 >
-  + Add New {{ title }}
+  + {{ "Add New" | translate }} {{ title | translate }}
 </button>
 
 <div
@@ -19,7 +19,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-6" id="uploadFieldsModalLabel">
-          Create New {{ title }}
+          {{ "Create New" | translate }} {{ title | translate }}
         </h1>
         <button
           type="button"
@@ -40,17 +40,19 @@
                 role="alert"
                 *ngIf="uploadFieldForm.get(field.field)?.touched && uploadFieldForm.get(field.field)?.errors?.['required']"
               >
-                <label>Required field</label>
+                <label>{{ "Required field" | translate }}</label>
               </div>
 
-              <label class="fs-6 fw-semibold mb-1">{{ field.as }}:</label>
+              <label class="fs-6 fw-semibold mb-1"
+                >{{ field.as | translate }}:</label
+              >
 
               <div
                 class="alert alert-danger mt-1 mb-1"
                 role="alert"
                 *ngIf="differentPasswordError && field.type === 'password'"
               >
-                <label>Passwords must match</label>
+                <label>{{ "Passwords must match" | translate }}</label>
               </div>
 
               <div
@@ -58,7 +60,9 @@
                 role="alert"
                 *ngIf="uploadFieldForm.get(field.field)?.touched && uploadFieldForm.get(field.field)?.errors?.['minLength']"
               >
-                <label>Field must has more than 3 characters</label>
+                <label>{{
+                  "Field must has more than 3 characters" | translate
+                }}</label>
               </div>
 
               <input
@@ -76,7 +80,7 @@
                     formControlName="user_type"
                     class="me-1"
                   />
-                  <label>Superuser</label>
+                  <label>{{ "Superuser" | translate }}</label>
                 </div>
 
                 <div class="col-3">
@@ -86,7 +90,7 @@
                     formControlName="user_type"
                     class="me-1"
                   />
-                  <label>Admin</label>
+                  <label>{{ "Admin" | translate }}</label>
                 </div>
               </div>
             </div>
@@ -100,7 +104,7 @@
           data-bs-dismiss="modal"
           (click)="uploadData()"
         >
-          Submit
+          {{ "Submit" | translate }}
         </button>
       </div>
     </div>

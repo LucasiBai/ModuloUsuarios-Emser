@@ -21,6 +21,8 @@ export class ItemListComponent {
 
   @Input() title!: string;
 
+  @Input() darkMode!: boolean;
+
   isCurrentUserError: Boolean = false;
   _isNotSuperUserError: Boolean = false;
 
@@ -38,8 +40,6 @@ export class ItemListComponent {
     private itemListContainer: ItemListContainerComponent,
     private authService: AuthService
   ) {}
-
-  ngOnChange() {}
 
   public isNotSuperUserError() {
     this._isNotSuperUserError = true;

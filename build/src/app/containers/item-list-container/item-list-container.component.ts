@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { NavBarComponent } from 'src/app/components/nav-bar/nav-bar.component';
 
 import { APIRequestsService } from 'src/app/services/api-requests.service';
+import { DarkModeService } from 'src/app/services/dark-mode.service';
 import { FactoryFieldsService } from 'src/app/services/factory-fields.service';
 
 @Component({
@@ -12,6 +14,8 @@ import { FactoryFieldsService } from 'src/app/services/factory-fields.service';
 export class ItemListContainerComponent {
   category!: string;
   title: string = 'User';
+
+  isDarkMode: boolean = this.darkMode.getDarkModeStatus();
 
   item_list!: any[];
   fields: any[] = [
@@ -35,14 +39,13 @@ export class ItemListContainerComponent {
   constructor(
     private apiRequest: APIRequestsService,
     private factoryFieldsService: FactoryFieldsService,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
+    private darkMode: DarkModeService
   ) {
     this.chargeData();
   }
 
-  ngOnChange() {
-    this.chargeData();
-  }
+  ngOnChange() {}
 
   public chargeData() {
     this.route.params.subscribe(({ category }) => (this.category = category));
@@ -61,7 +64,6 @@ export class ItemListContainerComponent {
 
       this.apiRequest.get(url).subscribe((res: any) => {
         this.item_list = res.sort((a: any, b: any) => a.id - b.id);
-        console.log(res);
       });
     }
   }

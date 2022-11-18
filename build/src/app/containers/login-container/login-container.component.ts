@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { AuthService } from 'src/app/services/auth.service';
+import { DarkModeService } from 'src/app/services/dark-mode.service';
 
 @Component({
   selector: 'app-login-container',
@@ -14,10 +15,13 @@ export class LoginContainerComponent {
 
   errorsMsg!: string;
 
+  isDarkMode: boolean = this.darkMode.getDarkModeStatus();
+
   constructor(
     private readonly fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private darkMode: DarkModeService
   ) {}
 
   ngOnInit(): void {

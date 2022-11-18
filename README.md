@@ -10,11 +10,14 @@
 
 ## How to Use:
 
-To clone and run this application you'll need Git, PostgreSQL, Node.js, Python^3.8 and pip installed on your computer.
+To clone and run this application you'll need AngularCLI, Git, PostgreSQL, Node.js, Python^3.8 and pip installed on your computer.
 
 - `git clone https://github.com/LucasiBai/LaCandelaBaigorria.git` to download the code.
 - `cd LaCandelaBaigorria` go into the repository.
-- `npm install` to install node dependencies
+- `cd build` to go to the frontend package.
+- `npm install` to install node dependencies.
+- `ng serve` to initialize the frontend app.
+- `cd ..` to go back.
 - `pip install -r requirements.txt` to install python dependencies.
 - Create an .env file in core/settiings with:
 
@@ -26,7 +29,7 @@ To clone and run this application you'll need Git, PostgreSQL, Node.js, Python^3
 ```
 
 - `python3 or py manage.py migrate` to migrate database
-- `python3 or py manage.py runserver` to initialize the App.
+- `python3 or py manage.py runserver` to initialize the backend app.
 
 ## Information:
 
@@ -76,7 +79,7 @@ This is a fullstack application for a technical test for Emser.
 ## Tools:
 
 - Angular
-- Angular Material
+- Bootstrap
 - Django
 - Django Rest Framework
 - Django Tests

@@ -1,8 +1,9 @@
 <header>
   <app-nav-bar></app-nav-bar>
 </header>
-<main class="row">
+<main [attr.class]="isDarkMode ? 'row vh-100 bg-secondary' : 'row vh-100'">
   <app-item-list
+    [darkMode]="isDarkMode"
     [item_list]="item_list"
     [fields]="fields"
     [title]="title"

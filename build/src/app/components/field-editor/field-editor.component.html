@@ -11,7 +11,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-6" id="editFieldsModalLabel">
-          Edit Fields of {{ item.username }}
+          {{ "Edit Fields of" | translate }} {{ item.username }}
         </h1>
         <button
           type="button"
@@ -30,10 +30,12 @@
                   role="alert"
                   *ngIf="editFieldForm.get('{{field.field}}')?.touched && editFieldForm.get('{{field.field}}')?.errors?.['required']"
                 >
-                  <label>Required field</label>
+                  <label>{{ "Required field" | translate }}</label>
                 </div>
 
-                <label class="fs-6 fw-semibold mb-1">{{ field.as }}:</label>
+                <label class="fs-6 fw-semibold mb-1"
+                  >{{ field.as | translate }}:</label
+                >
                 <input
                   *ngIf="field.type !== 'radio'"
                   type="{{ field.type }}"
@@ -53,7 +55,7 @@
                     formControlName="user_type"
                     class="me-1"
                   />
-                  <label>Superuser</label>
+                  <label>{{ "Superuser" | translate }}</label>
                 </div>
 
                 <div class="col-3">
@@ -63,7 +65,7 @@
                     formControlName="user_type"
                     class="me-1"
                   />
-                  <label>Admin</label>
+                  <label>{{ "Admin" | translate }}</label>
                 </div>
               </div>
             </div>
@@ -77,7 +79,7 @@
           data-bs-dismiss="modal"
           (click)="updateData()"
         >
-          Submit
+          {{ "Submit" | translate }}
         </button>
       </div>
     </div>

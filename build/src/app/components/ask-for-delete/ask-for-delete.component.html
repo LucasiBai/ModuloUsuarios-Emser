@@ -9,7 +9,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h2 class="modal-title fs-5" id="deleteRowModalLabel">
-          Delete {{ title }}
+          {{ "Delete" | translate }} {{ title }}
         </h2>
         <button
           type="button"
@@ -19,7 +19,9 @@
         ></button>
       </div>
       <div class="modal-body">
-        <h5>Are you sure you want to delete {{ title }}?</h5>
+        <h5>
+          {{ "Are you sure you want to delete" | translate }} {{ title }}?
+        </h5>
       </div>
       <div class="modal-footer">
         <button
@@ -28,7 +30,7 @@
           data-bs-dismiss="modal"
           (click)="cancelDelete()"
         >
-          Cancel
+          {{ "Cancel" | translate }}
         </button>
         <button
           type="button"
@@ -36,7 +38,7 @@
           data-bs-dismiss="modal"
           (click)="acceptDelete()"
         >
-          Accept
+          {{ "Accept" | translate }}
         </button>
       </div>
     </div>

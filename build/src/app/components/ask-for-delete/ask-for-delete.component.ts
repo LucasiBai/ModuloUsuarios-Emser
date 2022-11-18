@@ -7,7 +7,7 @@ import { ItemListComponent } from '../item-list/item-list.component';
   styleUrls: ['./ask-for-delete.component.css'],
 })
 export class AskForDeleteComponent {
-  @Input() title!: String;
+  @Input() title!: string;
   @Input() id!: Number;
 
   constructor(private itemList: ItemListComponent) {}
