@@ -1,0 +1,126 @@
+<!-- <div>
+  <h3>Edit Fields of {{ item.username }}</h3>
+  <button class="btn" (click)="closeEditor()"><i class="bi bi-x"></i></button>
+  <form [formGroup]="editFieldForm" (ngSubmit)="updateData()">
+    <div>
+      <label
+        *ngIf="editFieldForm.get('username')?.touched && editFieldForm.get('username')?.errors?.['required'] "
+        >Campo Requerido</label
+      >
+      <input type="text" placeholder="Username" formControlName="username" />
+    </div>
+
+    <div>
+      <label
+        *ngIf="editFieldForm.get('first_name')?.touched && editFieldForm.get('first_name')?.errors?.['required'] "
+        >Campo Requerido</label
+      >
+      <input
+        type="text"
+        placeholder="First Name"
+        formControlName="first_name"
+      />
+    </div>
+
+    <div>
+      <label
+        *ngIf="editFieldForm.get('last_name')?.touched && editFieldForm.get('last_name')?.errors?.['required'] "
+        >Campo Requerido</label
+      >
+      <input type="text" placeholder="Last Name" formControlName="last_name" />
+    </div>
+
+    <label>Superuser</label>
+    <input type="radio" value="superuser" formControlName="user_type" />
+    <label>Admin</label>
+    <input type="radio" value="admin" formControlName="user_type" />
+    <input type="submit" class="btn" />
+  </form>
+</div> -->
+
+<div
+  class="modal fade"
+  id="editFieldsModal"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="editFieldsModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-6" id="editFieldsModalLabel">
+          Edit Fields of {{ item.username }}
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="editFieldForm">
+          <div>
+            <label
+              *ngIf="editFieldForm.get('username')?.touched && editFieldForm.get('username')?.errors?.['required'] "
+              >Required field</label
+            ><label class="fs-6 fw-semibold">Username:</label>
+            <input
+              type="text"
+              placeholder="Username"
+              formControlName="username"
+            />
+          </div>
+
+          <div>
+            <label
+              *ngIf="editFieldForm.get('first_name')?.touched && editFieldForm.get('first_name')?.errors?.['required'] "
+              >Required field</label
+            ><label class="fs-6 fw-semibold">First Name:</label>
+            <input
+              type="text"
+              placeholder="First Name"
+              formControlName="first_name"
+            />
+          </div>
+
+          <div>
+            <label
+              *ngIf="editFieldForm.get('last_name')?.touched && editFieldForm.get('last_name')?.errors?.['required'] "
+              >Required field</label
+            ><label class="fs-6 fw-semibold">Last Name:</label>
+            <input
+              type="text"
+              placeholder="Last Name"
+              formControlName="last_name"
+            />
+          </div>
+
+          <div>
+            <label class="fs-6 fw-semibold">User Type:</label>
+
+            <input type="radio" value="superuser" formControlName="user_type" />
+            <label>Superuser</label>
+
+            <input type="radio" value="admin" formControlName="user_type" />
+            <label>Admin</label>
+          </div>
+
+          <input type="submit" class="btn" />
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-bs-dismiss="modal"
+          (click)="updateData()"
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

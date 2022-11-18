@@ -3,16 +3,16 @@
   <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
     <label
       *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.errors?.['required'] "
-      >Campo Requerido!</label
+      >Required field</label
     >
     <label
       *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.errors?.['email'] "
-      >El valor ingresado debe ser un email válido</label
+      >The value entered must be a valid email address</label
     >
     <input type="text" placeholder="Email" formControlName="email" required />
     <label
       *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.errors?.['required'] "
-      >Campo Requerido!</label
+      >Required field</label
     >
     <input
       type="password"

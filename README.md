@@ -54,7 +54,7 @@ This is a fullstack application for a technical test for Emser.
 - `api/users/login/refresh/` user login refresh
 - `api/users/reset-password/` user refresh password
 - `api/users/accounts/` user list
-- `api/users/accounts/(id)` user detail
+- `api/users/accounts/(id)/` user detail
 - `api/users/accounts/me/` authorized user detail
 
 ### Project Api Roots

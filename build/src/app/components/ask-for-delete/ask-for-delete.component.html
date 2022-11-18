@@ -1,0 +1,44 @@
+<div
+  class="modal fade"
+  id="deleteRowModal"
+  tabindex="-1"
+  aria-labelledby="deleteRowModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title fs-5" id="deleteRowModalLabel">
+          Delete {{ title }}
+        </h2>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <h5>Are you sure you want to delete {{ title }}?</h5>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-bs-dismiss="modal"
+          (click)="cancelDelete()"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-bs-dismiss="modal"
+          (click)="acceptDelete()"
+        >
+          Accept
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
