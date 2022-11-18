@@ -6,7 +6,8 @@
   [id]="askingForDelete.id"
 ></app-ask-for-delete>
 <app-field-editor [item]="editFieldsOff"></app-field-editor>
-<button class="btn btn-sm btn-success">+ Add New User</button>
+<app-field-upload [title]="title"></app-field-upload>
+
 <table class="table table-light table-striped">
   <thead>
     <tr>
@@ -28,14 +29,17 @@
       <td>{{ item.user_type }}</td>
       <td>
         {{ item.is_active
-        }}<button class="btn" (click)="updateStatus(item.id, item.is_active)">
+        }}<button
+          class="btn btn-sm"
+          (click)="updateStatus(item.id, item.is_active)"
+        >
           <i class="bi bi-arrow-counterclockwise"></i>
         </button>
       </td>
       <td>
         <button
           (click)="showFieldEditor(item)"
-          class="btn btn-small"
+          class="btn btn-sm"
           data-bs-toggle="modal"
           data-bs-target="#editFieldsModal"
         >
@@ -43,7 +47,7 @@
         </button>
         <button
           (click)="askForDelete(item)"
-          class="btn btn-danger btn-small"
+          class="btn btn-danger btn-sm"
           type="button"
           data-bs-toggle="modal"
           data-bs-target="#deleteRowModal"

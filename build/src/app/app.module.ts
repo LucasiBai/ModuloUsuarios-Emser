@@ -18,6 +18,7 @@ import { ItemListContainerComponent } from './containers/item-list-container/ite
 import { NotFoundPageComponent } from './containers/not-found-page/not-found-page.component';
 import { FieldEditorComponent } from './components/field-editor/field-editor.component';
 import { AskForDeleteComponent } from './components/ask-for-delete/ask-for-delete.component';
+import { FieldUploadComponent } from './components/field-upload/field-upload.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { AskForDeleteComponent } from './components/ask-for-delete/ask-for-delet
     ItemListContainerComponent,
     NotFoundPageComponent,
     FieldEditorComponent,
+    FieldUploadComponent,
     AskForDeleteComponent,
   ],
   imports: [

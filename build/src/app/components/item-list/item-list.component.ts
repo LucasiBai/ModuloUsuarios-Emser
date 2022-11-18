@@ -13,6 +13,8 @@ export class ItemListComponent {
   @Input() item_list!: any[];
   @Input() fields!: any[];
 
+  title: string = 'User';
+
   isCurrentUserError: Boolean = false;
 
   askingForDelete: any = { title: '', id: 0 };
@@ -86,7 +88,6 @@ export class ItemListComponent {
   }
 
   public closeFieldEditor() {
-    this.editFields = false;
     this.editFieldsOff = {};
   }
 

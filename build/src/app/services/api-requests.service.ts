@@ -23,6 +23,10 @@ export class APIRequestsService {
     return this.httpClient.delete(`${this.AUTH_SERVER}${url}`);
   }
 
+  public post(url: String, payload: any) {
+    return this.httpClient.post(`${this.AUTH_SERVER}${url}`, payload);
+  }
+
   public updateValue(url: string, newValue: any) {
     return this.httpClient.patch(`${this.AUTH_SERVER}${url}`, newValue);
   }

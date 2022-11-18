@@ -1,0 +1,130 @@
+<button
+  class="btn btn-sm btn-success"
+  data-bs-toggle="modal"
+  data-bs-target="#uploadFieldsModal"
+>
+  + Add New {{ title }}
+</button>
+
+<div
+  class="modal fade"
+  id="uploadFieldsModal"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="uploadFieldsModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-6" id="uploadFieldsModalLabel">
+          Create New {{ title }}
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="uploadFieldForm">
+          <div>
+            <label
+              *ngIf="uploadFieldForm.get('email')?.touched && uploadFieldForm.get('email')?.errors?.['required'] "
+              >Required field</label
+            ><label class="fs-6 fw-semibold">Email:</label>
+            <input type="text" placeholder="Email" formControlName="email" />
+          </div>
+
+          <div>
+            <label
+              *ngIf="uploadFieldForm.get('username')?.touched && uploadFieldForm.get('username')?.errors?.['required'] "
+              >Required field</label
+            ><label class="fs-6 fw-semibold">Username:</label>
+            <input
+              type="text"
+              placeholder="Username"
+              formControlName="username"
+            />
+          </div>
+
+          <div>
+            <label
+              *ngIf="uploadFieldForm.get('password')?.touched && uploadFieldForm.get('password')?.errors?.['required'] "
+              >Required field</label
+            ><label class="fs-6 fw-semibold">Password:</label>
+            <label *ngIf="differentPasswordError"
+              >Passwords must match and have more than 5 characters</label
+            >
+            <input
+              type="password"
+              placeholder="Password"
+              formControlName="password"
+            />
+          </div>
+
+          <div>
+            <label
+              *ngIf="uploadFieldForm.get('repeatPassword')?.touched && uploadFieldForm.get('repeatPassword')?.errors?.['required'] "
+              >Required field</label
+            ><label class="fs-6 fw-semibold">Repeat Password:</label>
+            <label *ngIf="differentPasswordError"
+              >Passwords must match and have more than 5 characters</label
+            >
+            <input
+              type="password"
+              placeholder="Repeat Password"
+              formControlName="repeatPassword"
+            />
+          </div>
+
+          <div>
+            <label
+              *ngIf="uploadFieldForm.get('first_name')?.touched && uploadFieldForm.get('first_name')?.errors?.['required'] "
+              >Required field</label
+            ><label class="fs-6 fw-semibold">First Name:</label>
+            <input
+              type="text"
+              placeholder="First Name"
+              formControlName="first_name"
+            />
+          </div>
+
+          <div>
+            <label
+              *ngIf="uploadFieldForm.get('last_name')?.touched && uploadFieldForm.get('last_name')?.errors?.['required'] "
+              >Required field</label
+            ><label class="fs-6 fw-semibold">Last Name:</label>
+            <input
+              type="text"
+              placeholder="Last Name"
+              formControlName="last_name"
+            />
+          </div>
+
+          <div>
+            <label class="fs-6 fw-semibold">User Type:</label>
+
+            <input type="radio" value="superuser" formControlName="user_type" />
+            <label>Superuser</label>
+
+            <input type="radio" value="admin" formControlName="user_type" />
+            <label>Admin</label>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-bs-dismiss="modal"
+          (click)="uploadData()"
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
