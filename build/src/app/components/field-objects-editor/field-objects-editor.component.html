@@ -24,7 +24,7 @@
         <form [formGroup]="editFieldForm">
           <div *ngFor="let field of fields">
             <div *ngIf="field.type !== null">
-              <div class="d-flex flex-column mt-3 mb-3" *ngIf="!field.child">
+              <div class="d-flex flex-column mt-3 mb-3">
                 <div
                   class="alert alert-danger mt-1 mb-1"
                   role="alert"
@@ -44,7 +44,7 @@
                 />
               </div>
 
-              <div class="d-flex flex-column mt-3 mb-3" *ngIf="field.child">
+              <div class="d-flex flex-column mt-3 mb-3">
                 <div
                   class="alert alert-danger mt-1 mb-1"
                   role="alert"

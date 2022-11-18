@@ -46,6 +46,7 @@
   "Last Name": "Apellido",
   "Id": "Id",
   "Name": "Nombre",
-  "Author": "Author",
+  "Author:": "Autor:",
+  "Author": "Autor",
   "Project": "Proyecto"
 }

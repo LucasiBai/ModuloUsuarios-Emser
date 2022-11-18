@@ -19,14 +19,14 @@ export class FactoryFieldsService {
           child: true,
           childName: 'username',
           as: 'Author',
-          type: 'text',
+          type: 'radio',
         },
         {
           field: 'project',
           child: true,
           childName: 'name',
           as: 'Project',
-          type: 'text',
+          type: 'radio',
         },
       ];
     } else {

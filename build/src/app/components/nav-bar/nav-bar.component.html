@@ -1,8 +1,12 @@
 <nav [attr.class]="onDarkMode ? 'navbar bg-dark ' : 'navbar bg-light'">
   <div class="container-fluid">
     <a
-      [attr.class]="onDarkMode ? 'navbar-brand text-light ' : 'navbar-brand'"
-      href="#"
+      [attr.class]="
+        onDarkMode
+          ? 'navbar-brand text-light fw-semibold '
+          : 'navbar-brand fw-semibold'
+      "
+      routerLink="/"
       >{{ "User Module" | translate }}</a
     >
     <button
