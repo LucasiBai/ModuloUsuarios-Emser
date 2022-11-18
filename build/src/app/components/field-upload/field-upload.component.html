@@ -30,88 +30,37 @@
       </div>
       <div class="modal-body">
         <form [formGroup]="uploadFieldForm">
-          <div>
-            <label
-              *ngIf="uploadFieldForm.get('email')?.touched && uploadFieldForm.get('email')?.errors?.['required'] "
-              >Required field</label
-            ><label class="fs-6 fw-semibold">Email:</label>
-            <input type="text" placeholder="Email" formControlName="email" />
-          </div>
+          <div *ngFor="let field of createFields">
+            <div *ngIf="field.type !== null">
+              <label
+                *ngIf="uploadFieldForm.get(field.field)?.touched && uploadFieldForm.get(field.field)?.errors?.['required']"
+                >Required field</label
+              ><label class="fs-6 fw-semibold">{{ field.as }}:</label>
+              <label *ngIf="differentPasswordError && field.type === 'password'"
+                >Passwords must match</label
+              >
+              <label
+                *ngIf="uploadFieldForm.get(field.field)?.touched && uploadFieldForm.get(field.field)?.errors?.['minLength']"
+                >Field must has more than 3 characters</label
+              >
+              <input
+                *ngIf="field.type !== 'radio'"
+                type="{{ field.type }}"
+                placeholder="{{ field.as }}"
+                formControlName="{{ field.field }}"
+              />
+              <div *ngIf="field.type === 'radio'">
+                <input
+                  type="radio"
+                  value="superuser"
+                  formControlName="user_type"
+                />
+                <label>Superuser</label>
 
-          <div>
-            <label
-              *ngIf="uploadFieldForm.get('username')?.touched && uploadFieldForm.get('username')?.errors?.['required'] "
-              >Required field</label
-            ><label class="fs-6 fw-semibold">Username:</label>
-            <input
-              type="text"
-              placeholder="Username"
-              formControlName="username"
-            />
-          </div>
-
-          <div>
-            <label
-              *ngIf="uploadFieldForm.get('password')?.touched && uploadFieldForm.get('password')?.errors?.['required'] "
-              >Required field</label
-            ><label class="fs-6 fw-semibold">Password:</label>
-            <label *ngIf="differentPasswordError"
-              >Passwords must match and have more than 5 characters</label
-            >
-            <input
-              type="password"
-              placeholder="Password"
-              formControlName="password"
-            />
-          </div>
-
-          <div>
-            <label
-              *ngIf="uploadFieldForm.get('repeatPassword')?.touched && uploadFieldForm.get('repeatPassword')?.errors?.['required'] "
-              >Required field</label
-            ><label class="fs-6 fw-semibold">Repeat Password:</label>
-            <label *ngIf="differentPasswordError"
-              >Passwords must match and have more than 5 characters</label
-            >
-            <input
-              type="password"
-              placeholder="Repeat Password"
-              formControlName="repeatPassword"
-            />
-          </div>
-
-          <div>
-            <label
-              *ngIf="uploadFieldForm.get('first_name')?.touched && uploadFieldForm.get('first_name')?.errors?.['required'] "
-              >Required field</label
-            ><label class="fs-6 fw-semibold">First Name:</label>
-            <input
-              type="text"
-              placeholder="First Name"
-              formControlName="first_name"
-            />
-          </div>
-
-          <div>
-            <label
-              *ngIf="uploadFieldForm.get('last_name')?.touched && uploadFieldForm.get('last_name')?.errors?.['required'] "
-              >Required field</label
-            ><label class="fs-6 fw-semibold">Last Name:</label>
-            <input
-              type="text"
-              placeholder="Last Name"
-              formControlName="last_name"
-            />
-          </div>
-
-          <div>
-            <label class="fs-6 fw-semibold">User Type:</label>
-
-            <input type="radio" value="superuser" formControlName="user_type" />
-            <label>Superuser</label>
-
-            <input type="radio" value="admin" formControlName="user_type" />
-            <label>Admin</label>
+                <input type="radio" value="admin" formControlName="user_type" />
+                <label>Admin</label>
+              </div>
+            </div>
           </div>
         </form>
       </div>

@@ -3,5 +3,11 @@
 </header>
 <main>
   <p>item-list-container works!</p>
-  <app-item-list [item_list]="item_list" [fields]="fields"></app-item-list>
+  <app-item-list
+    [item_list]="item_list"
+    [fields]="fields"
+    [createFields]="createFields"
+    [isActiveField]="true"
+    [settingsField]="true"
+  ></app-item-list>
 </main>

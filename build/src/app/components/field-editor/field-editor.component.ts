@@ -11,6 +11,9 @@ import { ItemListComponent } from '../item-list/item-list.component';
 })
 export class FieldEditorComponent {
   @Input() item!: any;
+  @Input() fields!: any[];
+
+  @Input() title!: string;
 
   editFieldForm!: FormGroup;
 
@@ -27,18 +30,20 @@ export class FieldEditorComponent {
   public updateData() {
     const newValues = { ...this.editFieldForm.value };
 
-    if (newValues.user_type == 'superuser') {
-      newValues.is_superuser = true;
-    } else if (newValues.user_type == 'admin') {
-      newValues.is_superuser = false;
-    }
+    if (this.title === 'User') {
+      if (newValues.user_type == 'superuser') {
+        newValues.is_superuser = true;
+      } else if (newValues.user_type == 'admin') {
+        newValues.is_superuser = false;
+      }
 
-    this.apiRequest
-      .updateValue(`users/accounts/${this.item.id}/`, newValues)
-      .subscribe((res) => {
-        this.itemList.updateLocalData(this.item.id, newValues);
-        this.itemList.closeFieldEditor();
-      });
+      this.apiRequest
+        .updateValue(`users/accounts/${this.item.id}/`, newValues)
+        .subscribe((res) => {
+          this.itemList.updateLocalData(this.item.id, newValues);
+          this.itemList.closeFieldEditor();
+        });
+    }
   }
 
   public closeEditor() {
@@ -46,20 +51,24 @@ export class FieldEditorComponent {
   }
 
   initForm(): FormGroup {
-    return this.fb.group({
-      username: [
-        this.item?.username,
-        [Validators.required, Validators.minLength(3)],
-      ],
-      first_name: [
-        this.item?.first_name,
-        [Validators.required, Validators.minLength(3)],
-      ],
-      last_name: [
-        this.item?.last_name,
-        [Validators.required, Validators.minLength(3)],
-      ],
-      user_type: [this.item?.user_type, [Validators.required]],
-    });
+    const validationFields: any = {};
+
+    for (let root of this.fields) {
+      const validationField = [this.item[root.field], [Validators.required]];
+
+      if (root.field === 'password' || root.field === 'repeatPassword') {
+        validationField[1].push(Validators.minLength(5));
+      } else {
+        validationField[1].push(Validators.minLength(3));
+      }
+
+      if (root.field === 'email') {
+        validationField[1].push(Validators.email);
+      }
+
+      validationFields[root.field] = validationField;
+    }
+
+    return this.fb.group(validationFields);
   }
 }

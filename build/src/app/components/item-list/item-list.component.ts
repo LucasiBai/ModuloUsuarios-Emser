@@ -12,6 +12,10 @@ import { ItemListContainerComponent } from '../../containers/item-list-container
 export class ItemListComponent {
   @Input() item_list!: any[];
   @Input() fields!: any[];
+  @Input() createFields!: any[];
+
+  @Input() isActiveField!: Boolean;
+  @Input() settingsField!: Boolean;
 
   title: string = 'User';
 
@@ -26,6 +30,8 @@ export class ItemListComponent {
     private apiRequest: APIRequestsService,
     private itemListContainer: ItemListContainerComponent
   ) {}
+
+  ngOnChange() {}
 
   // Change is_active status
 

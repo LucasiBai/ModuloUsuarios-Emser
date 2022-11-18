@@ -1,33 +1,45 @@
-<label *ngIf="isCurrentUserError"
-  >The user cannot deactivate his own account</label
->
+<!-- Delete Item Asker -->
 <app-ask-for-delete
   [title]="askingForDelete.title"
   [id]="askingForDelete.id"
 ></app-ask-for-delete>
-<app-field-editor [item]="editFieldsOff"></app-field-editor>
-<app-field-upload [title]="title"></app-field-upload>
 
+<!-- Field Editor -->
+<app-field-editor
+  [title]="title"
+  [item]="editFieldsOff"
+  [fields]="fields"
+></app-field-editor>
+
+<!-- Field Upload -->
+<app-field-upload
+  [title]="title"
+  [createFields]="createFields"
+></app-field-upload>
+
+<label *ngIf="isCurrentUserError"
+  >The user cannot deactivate his own account</label
+>
+
+<!-- Table -->
 <table class="table table-light table-striped">
   <thead>
     <tr>
-      <th>Id</th>
-      <th>Username</th>
-      <th>First Name</th>
-      <th>Last Name</th>
-      <th>Type</th>
-      <th>Is Active</th>
-      <th>Settings</th>
+      <th *ngFor="let field of fields">{{ field.as }}</th>
+      <!-- Active Field Header -->
+      <th *ngIf="isActiveField">Is Active</th>
+      <!-- Setting Field Header -->
+      <th *ngIf="settingsField">Settings</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let item of item_list">
-      <td>{{ item.id }}</td>
-      <td>{{ item.username }}</td>
-      <td>{{ item.first_name }}</td>
-      <td>{{ item.last_name }}</td>
-      <td>{{ item.user_type }}</td>
-      <td>
+      <td *ngFor="let field of fields">
+        {{ item[field.field] }}
+      </td>
+
+      <!-- Active Field Body -->
+      <td *ngIf="isActiveField">
         {{ item.is_active
         }}<button
           class="btn btn-sm"
@@ -36,7 +48,9 @@
           <i class="bi bi-arrow-counterclockwise"></i>
         </button>
       </td>
-      <td>
+
+      <!-- Setting Field Body -->
+      <td *ngIf="settingsField">
         <button
           (click)="showFieldEditor(item)"
           class="btn btn-sm"

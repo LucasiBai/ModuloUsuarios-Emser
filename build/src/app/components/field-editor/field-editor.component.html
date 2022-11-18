@@ -22,50 +22,30 @@
       </div>
       <div class="modal-body">
         <form [formGroup]="editFieldForm">
-          <div>
-            <label
-              *ngIf="editFieldForm.get('username')?.touched && editFieldForm.get('username')?.errors?.['required'] "
-              >Required field</label
-            ><label class="fs-6 fw-semibold">Username:</label>
-            <input
-              type="text"
-              placeholder="Username"
-              formControlName="username"
-            />
-          </div>
+          <div *ngFor="let field of fields">
+            <div *ngIf="field.type !== null">
+              <label
+                *ngIf="editFieldForm.get('{{field.field}}')?.touched && editFieldForm.get('{{field.field}}')?.errors?.['required']"
+                >Required field</label
+              ><label class="fs-6 fw-semibold">{{ field.as }}:</label>
+              <input
+                *ngIf="field.type !== 'radio'"
+                type="{{ field.type }}"
+                placeholder="{{ field.as }}"
+                formControlName="{{ field.field }}"
+              />
+              <div *ngIf="field.type === 'radio'">
+                <input
+                  type="radio"
+                  value="superuser"
+                  formControlName="user_type"
+                />
+                <label>Superuser</label>
 
-          <div>
-            <label
-              *ngIf="editFieldForm.get('first_name')?.touched && editFieldForm.get('first_name')?.errors?.['required'] "
-              >Required field</label
-            ><label class="fs-6 fw-semibold">First Name:</label>
-            <input
-              type="text"
-              placeholder="First Name"
-              formControlName="first_name"
-            />
-          </div>
-
-          <div>
-            <label
-              *ngIf="editFieldForm.get('last_name')?.touched && editFieldForm.get('last_name')?.errors?.['required'] "
-              >Required field</label
-            ><label class="fs-6 fw-semibold">Last Name:</label>
-            <input
-              type="text"
-              placeholder="Last Name"
-              formControlName="last_name"
-            />
-          </div>
-
-          <div>
-            <label class="fs-6 fw-semibold">User Type:</label>
-
-            <input type="radio" value="superuser" formControlName="user_type" />
-            <label>Superuser</label>
-
-            <input type="radio" value="admin" formControlName="user_type" />
-            <label>Admin</label>
+                <input type="radio" value="admin" formControlName="user_type" />
+                <label>Admin</label>
+              </div>
+            </div>
           </div>
         </form>
       </div>

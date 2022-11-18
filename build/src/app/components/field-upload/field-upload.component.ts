@@ -12,6 +12,7 @@ import { ItemListComponent } from '../item-list/item-list.component';
 })
 export class FieldUploadComponent {
   @Input() title!: any;
+  @Input() createFields!: any[];
 
   differentPasswordError!: Boolean;
 
@@ -30,37 +31,46 @@ export class FieldUploadComponent {
   public uploadData() {
     const newValues = { ...this.uploadFieldForm.value };
 
-    if (newValues.user_type == 'superuser') {
-      newValues.is_superuser = true;
-    } else if (newValues.user_type == 'admin') {
-      newValues.is_superuser = false;
-    }
+    if (this.title === 'User') {
+      if (newValues.user_type == 'superuser') {
+        newValues.is_superuser = true;
+      } else if (newValues.user_type == 'admin') {
+        newValues.is_superuser = false;
+      }
 
-    if (newValues['password'] !== newValues['repeatPassword']) {
-      this.differentPasswordError = true;
-      return;
-    } else {
-      this.differentPasswordError = false;
-      delete newValues['repeatPassword'];
-    }
+      if (newValues['password'] !== newValues['repeatPassword']) {
+        this.differentPasswordError = true;
+        return;
+      } else {
+        this.differentPasswordError = false;
+        delete newValues['repeatPassword'];
+      }
 
-    this.apiRequest.post(`users/accounts/`, newValues).subscribe((res) => {
-      this.itemListContainer.chargeData();
-    });
+      this.apiRequest.post(`users/accounts/`, newValues).subscribe((res) => {
+        this.itemListContainer.chargeData();
+      });
+    }
   }
 
   initForm(): FormGroup {
-    return this.fb.group({
-      username: ['', [Validators.required, Validators.minLength(3)]],
-      email: [
-        '',
-        [Validators.required, Validators.minLength(3), Validators.email],
-      ],
-      password: ['', [Validators.required, Validators.minLength(5)]],
-      repeatPassword: ['', [Validators.required, Validators.minLength(5)]],
-      first_name: ['', [Validators.required, Validators.minLength(3)]],
-      last_name: ['', [Validators.required, Validators.minLength(3)]],
-      user_type: ['admin', [Validators.required]],
-    });
+    const validationFields: any = {};
+
+    for (let root of this.createFields) {
+      const validationField: any = ['', [Validators.required]];
+
+      if (root.field === 'password' || root.field === 'repeatPassword') {
+        validationField[1].push(Validators.minLength(5));
+      } else {
+        validationField[1].push(Validators.minLength(3));
+      }
+
+      if (root.field === 'email') {
+        validationField[1].push(Validators.email);
+      }
+
+      validationFields[root.field] = validationField;
+    }
+
+    return this.fb.group(validationFields);
   }
 }
