@@ -12,8 +12,8 @@
 
 To clone and run this application you'll need AngularCLI, Git, PostgreSQL, Node.js, Python^3.8 and pip installed on your computer.
 
-- `git clone https://github.com/LucasiBai/LaCandelaBaigorria.git` to download the code.
-- `cd LaCandelaBaigorria` go into the repository.
+- `git clone https://github.com/LucasiBai/ModuloUsuarios-Emser` to download the code.
+- `cd ModuloUsuarios-Emser` go into the repository.
 - `cd build` to go to the frontend package.
 - `npm install` to install node dependencies.
 - `ng serve` to initialize the frontend app.
