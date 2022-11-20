@@ -25,7 +25,6 @@ import { AskForDeleteComponent } from './components/ask-for-delete/ask-for-delet
 import { FieldUploadComponent } from './components/field-upload/field-upload.component';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { FieldObjectsEditorComponent } from './components/field-objects-editor/field-objects-editor.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -41,7 +40,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     FieldEditorComponent,
     FieldUploadComponent,
     AskForDeleteComponent,
-    FieldObjectsEditorComponent,
   ],
   imports: [
     BrowserModule,

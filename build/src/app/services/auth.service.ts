@@ -10,12 +10,14 @@ import { UserInterface } from '../models/user';
 import { JwtResponseInterface } from '../models/jwt-response';
 import { UpdatedTokenInterface } from '../models/updated-token-interface';
 
+import { enviroment } from '../enviroment';
+
 @Injectable()
 export class AuthService {
-  AUTH_SERVER: string = 'http://127.0.0.1:8000/api/';
+  AUTH_SERVER: string = enviroment.url;
   authSubject = new BehaviorSubject(false);
-  TOKEN_LIFETIME = 270000;
-  REFRESH_TOKEN_LIFETIME = 345600000;
+  TOKEN_LIFETIME = enviroment.token_lifetime;
+  REFRESH_TOKEN_LIFETIME = enviroment.refresh_token_lifetime;
 
   private token!: string;
 

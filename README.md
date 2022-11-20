@@ -39,6 +39,16 @@ This is a fullstack application for a technical test for Emser.
 
 https://emser-modulo-usuarios.netlify.app
 
+### Superuser authentication:
+
+- Email: superuser@emseradmin.com
+- Password: secret_password
+
+### Admin authentication:
+
+- Email: adminuser@emseradmin.com
+- Password: secret_password
+
 ## Deploy Back Link:
 
 https://emser-user-module.onrender.com/

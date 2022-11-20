@@ -18,12 +18,22 @@ DATABASES = {
 }
 
 CORS_ORIGIN_WHITELIST = os.environ.get(
-    "CORS_ORIGIN_WHITELIST", default=["https://emser-modulo-usuarios.netlify.app"]
+    "CORS_ORIGIN_WHITELIST",
+    default=[
+        "https://emser-modulo-usuarios.netlify.app",
+        "http://localhost:4200",
+        "http://127.0.0.1:4200",
+    ],
 )
 
 
 CSRF_TRUSTED_ORIGINS = os.environ.get(
-    "CSRF_TRUSTED_ORIGINS", default=["https://emser-modulo-usuarios.netlify.app"]
+    "CSRF_TRUSTED_ORIGINS",
+    default=[
+        "https://emser-modulo-usuarios.netlify.app",
+        "http://localhost:4200",
+        "http://127.0.0.1:4200",
+    ],
 )
 
 
