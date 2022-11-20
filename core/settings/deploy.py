@@ -2,11 +2,6 @@ from .base import *
 
 DEBUG = "RENDER" not in os.environ
 
-if not DEBUG:
-    STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-    STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
-
 SECRET_KEY = os.environ.get("SECRET_KEY", default=env("SECRET_KEY"))
 
 
