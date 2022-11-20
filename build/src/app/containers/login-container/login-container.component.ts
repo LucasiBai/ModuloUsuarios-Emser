@@ -36,7 +36,6 @@ export class LoginContainerComponent {
       },
       (errors) => {
         this.errorsMsg = errors.error.message;
-        console.log(this.errorsMsg);
       }
     );
   }

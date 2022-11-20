@@ -19,6 +19,11 @@ export class FieldEditorComponent implements OnChanges {
 
   editFieldForm!: FormGroup;
 
+  inputError!: boolean;
+  inputErrorMsg!: string;
+
+  foreign_keys!: any;
+
   constructor(
     private readonly fb: FormBuilder,
     private apiRequest: APIRequestsService,
@@ -35,7 +40,7 @@ export class FieldEditorComponent implements OnChanges {
     if (this.itemList.isSuperuser) {
       const newValues = { ...this.editFieldForm.value };
 
-      if (this.title === 'User') {
+      if (this.title === 'Users') {
         if (newValues.user_type == 'superuser') {
           newValues.is_superuser = true;
         } else if (newValues.user_type == 'admin') {
@@ -44,19 +49,39 @@ export class FieldEditorComponent implements OnChanges {
 
         this.apiRequest
           .updateValue(`users/accounts/${this.item.id}/`, newValues)
-          .subscribe((res) => {
-            this.itemList.updateLocalData(this.item.id, newValues);
-            this.itemList.closeFieldEditor();
-          });
-      } else {
-        const url = this.factoryFields.getUrl(this.itemListContainer.category);
-        this.apiRequest
-          .updateValue(`${url}${this.item.id}/`, newValues)
-          .subscribe((res) => {
-            this.itemList.updateLocalData(this.item.id, newValues);
-            this.itemList.closeFieldEditor();
-          });
+          .subscribe(
+            (res) => {
+              this.itemListContainer.chargeData();
+              this.itemList.closeFieldEditor();
+            },
+            (error) => {
+              this.inputError = true;
+              this.inputErrorMsg = error.error;
+              this.itemListContainer.chargeData();
+            }
+          );
+      } else if (this.title === 'Projects Users') {
+        for (let field in newValues) {
+          if (field == 'username') {
+            newValues.user_id = Number(newValues.username);
+            delete newValues.username;
+          } else {
+            newValues.project_id = Number(newValues.name);
+            delete newValues.name;
+          }
+        }
       }
+
+      const url = this.factoryFields.getUrl(this.itemListContainer.category);
+      this.apiRequest
+        .updateValue(`${url}${this.item.id}/`, newValues)
+        .subscribe(
+          (res) => {
+            this.itemListContainer.chargeData();
+            this.itemList.closeFieldEditor();
+          },
+          (error) => {}
+        );
     } else {
       this.itemList.isNotSuperUserError();
     }
@@ -77,7 +102,7 @@ export class FieldEditorComponent implements OnChanges {
         validationField = [this.item[root.field], [Validators.required]];
       } else {
         validationField = [
-          this.item[root.field][root.childName],
+          this.item[root.field] ? this.item[root.field]['id'] : '',
           [Validators.required],
         ];
       }

@@ -18,23 +18,9 @@ export class ItemListContainerComponent {
   isDarkMode: boolean = this.darkMode.getDarkModeStatus();
 
   item_list!: any[];
-  fields: any[] = [
-    { field: 'id', as: 'Id', type: null },
-    { field: 'username', as: 'Username', type: 'text' },
-    { field: 'first_name', as: 'First Name', type: 'text' },
-    { field: 'last_name', as: 'Last Name', type: 'text' },
-    { field: 'user_type', as: 'Type', type: 'radio' },
-  ];
+  fields!: any[];
 
-  createFields: any[] = [
-    { field: 'email', as: 'Email', type: 'email' },
-    { field: 'username', as: 'Username', type: 'text' },
-    { field: 'password', as: 'Password', type: 'password' },
-    { field: 'repeatPassword', as: 'Repeat Password', type: 'password' },
-    { field: 'first_name', as: 'First Name', type: 'text' },
-    { field: 'last_name', as: 'Last Name', type: 'text' },
-    { field: 'user_type', as: 'Type', type: 'radio' },
-  ];
+  createFields!: any[];
 
   constructor(
     private apiRequest: APIRequestsService,
@@ -47,31 +33,28 @@ export class ItemListContainerComponent {
 
   ngOnChange() {}
 
+  public searchData(table: string) {
+    this.fields = this.factoryFieldsService.getFields(table);
+    this.createFields = this.factoryFieldsService.getCreateFields(table);
+    this.title = this.factoryFieldsService.getTitle(table);
+
+    const url: string = this.factoryFieldsService.getUrl(table);
+
+    this.apiRequest.get(url).subscribe((res: any) => {
+      if (!res) {
+        this.item_list = [];
+      } else {
+        this.item_list = res.sort((a: any, b: any) => a.id - b.id);
+      }
+    });
+  }
+
   public chargeData() {
     this.route.params.subscribe(({ category }) => (this.category = category));
-    if (!this.category || this.category === 'users') {
-      this.apiRequest.get('users/accounts/').subscribe((res: any) => {
-        if (!res) {
-        } else {
-          this.item_list = res.sort((a: any, b: any) => a.id - b.id);
-        }
-      });
+    if (!this.category) {
+      this.searchData('users');
     } else {
-      this.fields = this.factoryFieldsService.getFields(this.category);
-      this.createFields = this.factoryFieldsService.getCreateFields(
-        this.category
-      );
-      this.title = this.factoryFieldsService.getTitle(this.category);
-
-      const url: string = this.factoryFieldsService.getUrl(this.category);
-
-      this.apiRequest.get(url).subscribe((res: any) => {
-        if (!res) {
-          this.item_list = [];
-        } else {
-          this.item_list = res.sort((a: any, b: any) => a.id - b.id);
-        }
-      });
+      this.searchData(this.category);
     }
   }
 }

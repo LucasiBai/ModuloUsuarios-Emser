@@ -19,15 +19,25 @@ export class FactoryFieldsService {
           child: true,
           childName: 'username',
           as: 'Author',
-          type: 'radio',
+          type: 'text',
+          fk: 'users',
         },
         {
           field: 'project',
           child: true,
           childName: 'name',
           as: 'Project',
-          type: 'radio',
+          type: 'text',
+          fk: 'projects',
         },
+      ];
+    } else if (category === 'users') {
+      return [
+        { field: 'id', as: 'Id', type: null },
+        { field: 'username', as: 'Username', type: 'text' },
+        { field: 'first_name', as: 'First Name', type: 'text' },
+        { field: 'last_name', as: 'Last Name', type: 'text' },
+        { field: 'user_type', as: 'Type', type: 'radio' },
       ];
     } else {
       return [];
@@ -55,6 +65,16 @@ export class FactoryFieldsService {
           type: 'text',
         },
       ];
+    } else if (category === 'users') {
+      return [
+        { field: 'email', as: 'Email', type: 'email' },
+        { field: 'username', as: 'Username', type: 'text' },
+        { field: 'password', as: 'Password', type: 'password' },
+        { field: 'repeatPassword', as: 'Repeat Password', type: 'password' },
+        { field: 'first_name', as: 'First Name', type: 'text' },
+        { field: 'last_name', as: 'Last Name', type: 'text' },
+        { field: 'user_type', as: 'Type', type: 'radio' },
+      ];
     } else {
       return [];
     }
@@ -73,6 +93,8 @@ export class FactoryFieldsService {
       return 'projects/';
     } else if (category === 'projects-users') {
       return 'projects-users/';
+    } else if (category === 'users') {
+      return 'users/accounts/';
     } else {
       return 'users/accounts/';
     }

@@ -80,7 +80,7 @@ export class ItemListComponent {
   public changeStatusApi(id: any, newStatus: Boolean): any {
     const isCurrentUser = this.apiRequest.isCurrentUser(id);
     const category = this.itemListContainer.category;
-    if (!isCurrentUser || category !== 'users') {
+    if (!isCurrentUser || (category && category !== 'users')) {
       const url = this.factoryField.getUrl(this.itemListContainer.category);
       this.isCurrentUserError = false;
       this.apiRequest

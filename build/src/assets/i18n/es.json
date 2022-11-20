@@ -52,5 +52,7 @@
   "loading": "cargando",
   "Loading": "Cargando",
   "Empty table": "Tabla vacía",
-  "Successfully created": "Creado correctamente"
+  "Successfully created": "Creado correctamente",
+  "true": "verdadero",
+  "false": "falso"
 }

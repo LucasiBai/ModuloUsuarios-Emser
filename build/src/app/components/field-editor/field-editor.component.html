@@ -34,6 +34,14 @@
                   <label>{{ "Required field" | translate }}</label>
                 </div>
 
+                <div
+                  class="alert alert-danger mt-1 mb-1"
+                  role="alert"
+                  *ngIf="inputError"
+                >
+                  <label>{{ inputErrorMsg | translate }}</label>
+                </div>
+
                 <label class="fs-6 fw-semibold mb-1"
                   >{{ field.as | translate }}:</label
                 >
@@ -58,26 +66,20 @@
                 <label class="fs-6 fw-semibold mb-1"
                   >{{ field.as | translate }}:</label
                 >
-                <input
-                  *ngIf="field.type !== 'radio'"
-                  type="{{ field.type }}"
-                  placeholder="{{ field.as }}"
-                  formControlName="{{ field.childName }}"
-                />
 
-                <input
-                  *ngIf="field.type === 'radio'"
-                  type="{{ field.type }}"
-                  placeholder="{{ field.as }}"
-                  formControlName="{{ field.childName }}"
-                />
-
-                <label>{{ field.childName }}</label>
+                <div class="d-flex" *ngIf="field.type !== 'radio'">
+                  <input
+                    type="{{ field.type }}"
+                    placeholder="Id"
+                    formControlName="{{ field.childName }}"
+                    class="id-input"
+                  />
+                </div>
               </div>
 
               <!-- User type select field -->
               <div
-                *ngIf="field.type === 'radio' && title === 'User'"
+                *ngIf="field.type === 'radio' && title === 'Users'"
                 class="d-flex row"
               >
                 <div class="col-3">

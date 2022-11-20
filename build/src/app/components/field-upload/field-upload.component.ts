@@ -36,7 +36,7 @@ export class FieldUploadComponent {
     if (this.itemList.isSuperuser) {
       const newValues = { ...this.uploadFieldForm.value };
 
-      if (this.title === 'User') {
+      if (this.title === 'Users') {
         if (newValues.user_type == 'superuser') {
           newValues.is_staff = true;
           newValues.is_superuser = true;
