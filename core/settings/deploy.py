@@ -17,13 +17,15 @@ DATABASES = {
     "default": dj_database_url.config(default=env("DATABASE_URL"), conn_max_age=600),
 }
 
-CORS_ORIGIN_WHITELIST = dj_database_url.config(
-    default=["https://emser-modulo-usuarios.netlify.app"]
+CORS_ORIGIN_WHITELIST = os.environ.get(
+    "CORS_ORIGIN_WHITELIST", default=["https://emser-modulo-usuarios.netlify.app"]
 )
 
-CSRF_TRUSTED_ORIGINS = dj_database_url.config(
-    default=["https://emser-modulo-usuarios.netlify.app"]
+
+CSRF_TRUSTED_ORIGINS = os.environ.get(
+    "CSRF_TRUSTED_ORIGINS", default=["https://emser-modulo-usuarios.netlify.app"]
 )
+
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
