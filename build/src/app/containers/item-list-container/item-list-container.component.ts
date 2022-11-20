@@ -51,7 +51,10 @@ export class ItemListContainerComponent {
     this.route.params.subscribe(({ category }) => (this.category = category));
     if (!this.category || this.category === 'users') {
       this.apiRequest.get('users/accounts/').subscribe((res: any) => {
-        this.item_list = res.sort((a: any, b: any) => a.id - b.id);
+        if (!res) {
+        } else {
+          this.item_list = res.sort((a: any, b: any) => a.id - b.id);
+        }
       });
     } else {
       this.fields = this.factoryFieldsService.getFields(this.category);
@@ -63,7 +66,11 @@ export class ItemListContainerComponent {
       const url: string = this.factoryFieldsService.getUrl(this.category);
 
       this.apiRequest.get(url).subscribe((res: any) => {
-        this.item_list = res.sort((a: any, b: any) => a.id - b.id);
+        if (!res) {
+          this.item_list = [];
+        } else {
+          this.item_list = res.sort((a: any, b: any) => a.id - b.id);
+        }
       });
     }
   }

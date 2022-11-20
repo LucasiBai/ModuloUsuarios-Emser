@@ -30,6 +30,13 @@
       </div>
       <div class="modal-body">
         <form [formGroup]="uploadFieldForm">
+          <div
+            class="alert alert-success mt-1 mb-1"
+            role="alert"
+            *ngIf="successfulSended"
+          >
+            <label>{{ "Successfully created" | translate }}</label>
+          </div>
           <div *ngFor="let field of createFields">
             <div
               *ngIf="field.type !== null"
@@ -98,12 +105,7 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button
-          type="button"
-          class="btn btn-primary"
-          data-bs-dismiss="modal"
-          (click)="uploadData()"
-        >
+        <button type="button" class="btn btn-primary" (click)="uploadData()">
           {{ "Submit" | translate }}
         </button>
       </div>

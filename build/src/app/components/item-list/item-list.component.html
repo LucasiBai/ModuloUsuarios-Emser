@@ -94,5 +94,36 @@
         </button>
       </td>
     </tr>
+
+    <!-- Loading table -->
+    <tr *ngIf="!item_list">
+      <td *ngFor="let fieldLoad of fields">
+        {{ "Loading" | translate }}
+        <div class="spinner-border spinner-border-sm" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </td>
+      <td *ngIf="isActiveField">
+        {{ "Loading" | translate }}
+        <div class="spinner-border spinner-border-sm" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </td>
+      <td *ngIf="settingsField">
+        {{ "Loading" | translate }}
+        <div class="spinner-border spinner-border-sm" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </td>
+    </tr>
+
+    <!-- Empty table -->
+    <tr *ngIf="item_list !== undefined && item_list.length === 0">
+      <td *ngFor="let fieldLoad of fields">
+        {{ "Empty table" | translate }}...
+      </td>
+      <td *ngIf="isActiveField">{{ "" }}</td>
+      <td *ngIf="settingsField">{{ "" }}</td>
+    </tr>
   </tbody>
 </table>

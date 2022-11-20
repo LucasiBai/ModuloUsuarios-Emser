@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ItemListContainerComponent } from 'src/app/containers/item-list-container/item-list-container.component';
@@ -11,7 +11,7 @@ import { ItemListComponent } from '../item-list/item-list.component';
   templateUrl: './field-editor.component.html',
   styleUrls: ['./field-editor.component.css'],
 })
-export class FieldEditorComponent {
+export class FieldEditorComponent implements OnChanges {
   @Input() item!: any;
   @Input() fields!: any[];
 
@@ -70,7 +70,17 @@ export class FieldEditorComponent {
     const validationFields: any = {};
 
     for (let root of this.fields) {
-      const validationField = [this.item[root.field], [Validators.required]];
+      let validationField;
+
+      // Object validation
+      if (!root.child) {
+        validationField = [this.item[root.field], [Validators.required]];
+      } else {
+        validationField = [
+          this.item[root.field][root.childName],
+          [Validators.required],
+        ];
+      }
 
       if (root.field === 'password' || root.field === 'repeatPassword') {
         validationField[1].push(Validators.minLength(5));
@@ -82,7 +92,12 @@ export class FieldEditorComponent {
         validationField[1].push(Validators.email);
       }
 
-      validationFields[root.field] = validationField;
+      // Object Validation
+      if (!root.child) {
+        validationFields[root.field] = validationField;
+      } else {
+        validationFields[root.childName] = validationField;
+      }
     }
 
     return this.fb.group(validationFields);

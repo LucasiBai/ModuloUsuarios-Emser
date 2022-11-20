@@ -24,6 +24,7 @@
         <form [formGroup]="editFieldForm">
           <div *ngFor="let field of fields">
             <div *ngIf="field.type !== null">
+              <!-- Normal Field -->
               <div class="d-flex flex-column mt-3 mb-3" *ngIf="!field.child">
                 <div
                   class="alert alert-danger mt-1 mb-1"
@@ -44,11 +45,12 @@
                 />
               </div>
 
+              <!-- Object Field -->
               <div class="d-flex flex-column mt-3 mb-3" *ngIf="field.child">
                 <div
                   class="alert alert-danger mt-1 mb-1"
                   role="alert"
-                  *ngIf="editFieldForm.get('{{field.field}}')?.touched && editFieldForm.get('{{field.field}}')?.errors?.['required']"
+                  *ngIf="editFieldForm.get('{{field.childName}}')?.touched && editFieldForm.get('{{field.childName}}')?.errors?.['required']"
                 >
                   <label>{{ "Required field" | translate }}</label>
                 </div>
@@ -60,18 +62,20 @@
                   *ngIf="field.type !== 'radio'"
                   type="{{ field.type }}"
                   placeholder="{{ field.as }}"
-                  formControlName="{{ field.field }}"
+                  formControlName="{{ field.childName }}"
                 />
 
                 <input
                   *ngIf="field.type === 'radio'"
                   type="{{ field.type }}"
                   placeholder="{{ field.as }}"
-                  formControlName="{{ field.field }}"
+                  formControlName="{{ field.childName }}"
                 />
-                <label>{{ field.fiel }}</label>
+
+                <label>{{ field.childName }}</label>
               </div>
 
+              <!-- User type select field -->
               <div
                 *ngIf="field.type === 'radio' && title === 'User'"
                 class="d-flex row"

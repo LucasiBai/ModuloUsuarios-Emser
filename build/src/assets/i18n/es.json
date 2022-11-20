@@ -48,5 +48,9 @@
   "Name": "Nombre",
   "Author:": "Autor:",
   "Author": "Autor",
-  "Project": "Proyecto"
+  "Project": "Proyecto",
+  "loading": "cargando",
+  "Loading": "Cargando",
+  "Empty table": "Tabla vacía",
+  "Successfully created": "Creado correctamente"
 }

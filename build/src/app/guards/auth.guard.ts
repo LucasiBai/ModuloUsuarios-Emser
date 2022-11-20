@@ -28,7 +28,8 @@ export class AuthGuard implements CanActivate {
     | Observable<boolean | UrlTree>
     | Promise<boolean | UrlTree>
     | boolean
-    | UrlTree {
+    | UrlTree
+    | any {
     const cookie = this.cookieService.check('token');
     const expiration = Number(this.cookieService.get('token-expiration'));
     const refreshExpiration = Number(
@@ -41,8 +42,9 @@ export class AuthGuard implements CanActivate {
     } else if (expiration > Date.now()) {
       return true;
     } else {
-      this.authService.refreshToken().subscribe();
-      window.location.reload();
+      this.authService.refreshToken().subscribe((res) => {
+        window.location.reload();
+      });
       return true;
     }
   }

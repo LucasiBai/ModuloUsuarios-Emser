@@ -23,9 +23,11 @@ export class ItemListComponent {
 
   @Input() darkMode!: boolean;
 
+  // Errors
   isCurrentUserError: Boolean = false;
   _isNotSuperUserError: Boolean = false;
 
+  // Permisions
   isSuperuser: Boolean =
     this.authService.getUserPermises() === 'superuser' ? true : false;
 
@@ -49,7 +51,6 @@ export class ItemListComponent {
   }
 
   // Change is_active status
-
   public updateStatus(id: Number, status: Boolean) {
     if (this.isSuperuser) {
       const newStatus = status ? false : true;

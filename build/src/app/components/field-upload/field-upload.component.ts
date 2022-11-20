@@ -16,6 +16,7 @@ export class FieldUploadComponent {
   @Input() createFields!: any[];
 
   differentPasswordError!: Boolean;
+  successfulSended!: Boolean;
 
   uploadFieldForm!: FormGroup;
 
@@ -37,8 +38,10 @@ export class FieldUploadComponent {
 
       if (this.title === 'User') {
         if (newValues.user_type == 'superuser') {
+          newValues.is_staff = true;
           newValues.is_superuser = true;
         } else if (newValues.user_type == 'admin') {
+          newValues.is_staff = true;
           newValues.is_superuser = false;
         }
 
@@ -48,14 +51,17 @@ export class FieldUploadComponent {
         } else {
           this.differentPasswordError = false;
           delete newValues['repeatPassword'];
+          this.successfulSended = true;
         }
 
         this.apiRequest.post(`users/accounts/`, newValues).subscribe((res) => {
+          this.uploadFieldForm = this.initForm();
           this.itemListContainer.chargeData();
         });
       } else {
         const url = this.factoryFields.getUrl(this.itemListContainer.category);
         this.apiRequest.post(url, newValues).subscribe((res) => {
+          this.uploadFieldForm = this.initForm();
           this.itemListContainer.chargeData();
         });
       }
