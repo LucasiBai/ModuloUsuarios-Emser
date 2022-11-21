@@ -35,6 +35,7 @@ export class FieldUploadComponent {
   public uploadData() {
     if (this.itemList.isSuperuser) {
       const newValues = { ...this.uploadFieldForm.value };
+      let url;
 
       if (this.title === 'Users') {
         if (newValues.user_type == 'superuser') {
@@ -51,20 +52,29 @@ export class FieldUploadComponent {
         } else {
           this.differentPasswordError = false;
           delete newValues['repeatPassword'];
-          this.successfulSended = true;
         }
 
-        this.apiRequest.post(`users/accounts/`, newValues).subscribe((res) => {
-          this.uploadFieldForm = this.initForm();
-          this.itemListContainer.chargeData();
-        });
+        url = `users/accounts/`;
+      } else if (this.title === 'Projects Users') {
+        for (let field in newValues) {
+          if (field == 'username') {
+            newValues.user_id = Number(newValues.username);
+            delete newValues.username;
+          } else {
+            newValues.project_id = Number(newValues.name);
+            delete newValues.name;
+          }
+        }
+        url = this.factoryFields.getUrl(this.itemListContainer.category);
       } else {
-        const url = this.factoryFields.getUrl(this.itemListContainer.category);
-        this.apiRequest.post(url, newValues).subscribe((res) => {
-          this.uploadFieldForm = this.initForm();
-          this.itemListContainer.chargeData();
-        });
+        url = this.factoryFields.getUrl(this.itemListContainer.category);
       }
+      // Api request
+      this.apiRequest.post(url, newValues).subscribe((res) => {
+        this.uploadFieldForm = this.initForm();
+        this.itemListContainer.chargeData();
+        this.successfulSended = true;
+      });
     } else {
       this.itemList.isNotSuperUserError();
     }

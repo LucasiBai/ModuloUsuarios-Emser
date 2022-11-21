@@ -40,7 +40,7 @@
           <div *ngFor="let field of createFields">
             <!-- Normal field -->
             <div
-              *ngIf="field.type !== null"
+              *ngIf="field.type !== null && !field.child"
               class="d-flex flex-column mt-3 mb-3"
             >
               <!-- title -->
@@ -78,6 +78,50 @@
                 type="{{ field.type }}"
                 placeholder="{{ field.as }}"
                 formControlName="{{ field.field }}"
+              />
+            </div>
+
+            <!-- Object field -->
+            <div
+              *ngIf="field.type !== null && field.child"
+              class="d-flex flex-column mt-3 mb-3"
+            >
+              <!-- title -->
+              <label class="fs-6 fw-semibold mb-1"
+                >{{ field.as | translate }}:</label
+              >
+              <!-- Errors Msg -->
+              <div
+                class="alert alert-danger mt-1 mb-1"
+                role="alert"
+                *ngIf="uploadFieldForm.get(field.field)?.touched && uploadFieldForm.get(field.field)?.errors?.['required']"
+              >
+                <label>{{ "Required field" | translate }}</label>
+              </div>
+              <div
+                class="alert alert-danger mt-1 mb-1"
+                role="alert"
+                *ngIf="differentPasswordError && field.type === 'password'"
+              >
+                <label>{{ "Passwords must match" | translate }}</label>
+              </div>
+              <div
+                class="alert alert-danger mt-1 mb-1"
+                role="alert"
+                *ngIf="uploadFieldForm.get(field.field)?.touched && uploadFieldForm.get(field.field)?.errors?.['minLength']"
+              >
+                <label>{{
+                  "Field must has more than 3 characters" | translate
+                }}</label>
+              </div>
+
+              <!-- Input -->
+              <input
+                *ngIf="field.type !== 'radio'"
+                type="{{ field.type }}"
+                placeholder="Id"
+                formControlName="{{ field.childName }}"
+                class="id-input"
               />
             </div>
 
