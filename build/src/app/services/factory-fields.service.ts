@@ -20,7 +20,6 @@ export class FactoryFieldsService {
           childName: 'username',
           as: 'Author',
           type: 'text',
-          fk: 'users',
         },
         {
           field: 'project',
@@ -28,7 +27,6 @@ export class FactoryFieldsService {
           childName: 'name',
           as: 'Project',
           type: 'text',
-          fk: 'projects',
         },
       ];
     } else if (category === 'users') {
@@ -54,13 +52,15 @@ export class FactoryFieldsService {
         { field: 'id', as: 'Id', type: null },
         {
           field: 'author',
-
+          child: true,
+          childName: 'username',
           as: 'Author',
           type: 'text',
         },
         {
           field: 'project',
-
+          child: true,
+          childName: 'name',
           as: 'Project',
           type: 'text',
         },

@@ -22,10 +22,24 @@
       </div>
       <div class="modal-body">
         <form [formGroup]="editFieldForm">
+          <!-- Success Sended Msg -->
+          <div
+            class="alert alert-success mt-1 mb-1"
+            role="alert"
+            *ngIf="successfulSended"
+          >
+            <label>{{ "Successfully updated" | translate }}</label>
+          </div>
           <div *ngFor="let field of fields">
             <div *ngIf="field.type !== null">
               <!-- Normal Field -->
               <div class="d-flex flex-column mt-3 mb-3" *ngIf="!field.child">
+                <!-- title -->
+                <label class="fs-6 fw-semibold mb-1"
+                  >{{ field.as | translate }}:</label
+                >
+
+                <!-- Error Msg -->
                 <div
                   class="alert alert-danger mt-1 mb-1"
                   role="alert"
@@ -42,9 +56,7 @@
                   <label>{{ inputErrorMsg | translate }}</label>
                 </div>
 
-                <label class="fs-6 fw-semibold mb-1"
-                  >{{ field.as | translate }}:</label
-                >
+                <!-- Input -->
                 <input
                   *ngIf="field.type !== 'radio'"
                   type="{{ field.type }}"
@@ -55,6 +67,12 @@
 
               <!-- Object Field -->
               <div class="d-flex flex-column mt-3 mb-3" *ngIf="field.child">
+                <!-- title -->
+                <label class="fs-6 fw-semibold mb-1"
+                  >{{ field.as | translate }}:</label
+                >
+
+                <!-- Error Msg -->
                 <div
                   class="alert alert-danger mt-1 mb-1"
                   role="alert"
@@ -62,11 +80,15 @@
                 >
                   <label>{{ "Required field" | translate }}</label>
                 </div>
-
-                <label class="fs-6 fw-semibold mb-1"
-                  >{{ field.as | translate }}:</label
+                <div
+                  class="alert alert-danger mt-1 mb-1"
+                  role="alert"
+                  *ngIf="inputError"
                 >
+                  <label>{{ inputErrorMsg | translate }}</label>
+                </div>
 
+                <!-- Input -->
                 <div class="d-flex" *ngIf="field.type !== 'radio'">
                   <input
                     type="{{ field.type }}"
@@ -107,12 +129,7 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button
-          type="button"
-          class="btn btn-primary"
-          data-bs-dismiss="modal"
-          (click)="updateData()"
-        >
+        <button type="button" class="btn btn-primary" (click)="updateData()">
           {{ "Submit" | translate }}
         </button>
       </div>

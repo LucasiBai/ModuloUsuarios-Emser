@@ -38,10 +38,16 @@
             <label>{{ "Successfully created" | translate }}</label>
           </div>
           <div *ngFor="let field of createFields">
+            <!-- Normal field -->
             <div
               *ngIf="field.type !== null"
               class="d-flex flex-column mt-3 mb-3"
             >
+              <!-- title -->
+              <label class="fs-6 fw-semibold mb-1"
+                >{{ field.as | translate }}:</label
+              >
+              <!-- Errors Msg -->
               <div
                 class="alert alert-danger mt-1 mb-1"
                 role="alert"
@@ -49,11 +55,6 @@
               >
                 <label>{{ "Required field" | translate }}</label>
               </div>
-
-              <label class="fs-6 fw-semibold mb-1"
-                >{{ field.as | translate }}:</label
-              >
-
               <div
                 class="alert alert-danger mt-1 mb-1"
                 role="alert"
@@ -61,7 +62,6 @@
               >
                 <label>{{ "Passwords must match" | translate }}</label>
               </div>
-
               <div
                 class="alert alert-danger mt-1 mb-1"
                 role="alert"
@@ -72,33 +72,38 @@
                 }}</label>
               </div>
 
+              <!-- Input -->
               <input
                 *ngIf="field.type !== 'radio'"
                 type="{{ field.type }}"
                 placeholder="{{ field.as }}"
                 formControlName="{{ field.field }}"
               />
+            </div>
 
-              <div *ngIf="field.type === 'radio'" class="d-flex row">
-                <div class="col-3">
-                  <input
-                    type="radio"
-                    value="superuser"
-                    formControlName="user_type"
-                    class="me-1"
-                  />
-                  <label>{{ "Superuser" | translate }}</label>
-                </div>
+            <!-- User type select field -->
+            <div
+              *ngIf="field.type === 'radio' && title === 'Users'"
+              class="d-flex row"
+            >
+              <div class="col-3">
+                <input
+                  type="radio"
+                  value="superuser"
+                  formControlName="user_type"
+                  class="me-1"
+                />
+                <label>{{ "Superuser" | translate }}</label>
+              </div>
 
-                <div class="col-3">
-                  <input
-                    type="radio"
-                    value="admin"
-                    formControlName="user_type"
-                    class="me-1"
-                  />
-                  <label>{{ "Admin" | translate }}</label>
-                </div>
+              <div class="col-3">
+                <input
+                  type="radio"
+                  value="admin"
+                  formControlName="user_type"
+                  class="me-1"
+                />
+                <label>{{ "Admin" | translate }}</label>
               </div>
             </div>
           </div>

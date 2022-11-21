@@ -20,7 +20,9 @@ export class FieldEditorComponent implements OnChanges {
   editFieldForm!: FormGroup;
 
   inputError!: boolean;
-  inputErrorMsg!: string;
+  inputErrorMsg: string = '';
+
+  successfulSended!: boolean;
 
   foreign_keys!: any;
 
@@ -39,6 +41,7 @@ export class FieldEditorComponent implements OnChanges {
   public updateData() {
     if (this.itemList.isSuperuser) {
       const newValues = { ...this.editFieldForm.value };
+      let url;
 
       if (this.title === 'Users') {
         if (newValues.user_type == 'superuser') {
@@ -47,19 +50,7 @@ export class FieldEditorComponent implements OnChanges {
           newValues.is_superuser = false;
         }
 
-        this.apiRequest
-          .updateValue(`users/accounts/${this.item.id}/`, newValues)
-          .subscribe(
-            (res) => {
-              this.itemListContainer.chargeData();
-              this.itemList.closeFieldEditor();
-            },
-            (error) => {
-              this.inputError = true;
-              this.inputErrorMsg = error.error;
-              this.itemListContainer.chargeData();
-            }
-          );
+        url = 'users/accounts/';
       } else if (this.title === 'Projects Users') {
         for (let field in newValues) {
           if (field == 'username') {
@@ -70,17 +61,26 @@ export class FieldEditorComponent implements OnChanges {
             delete newValues.name;
           }
         }
+        url = this.factoryFields.getUrl(this.itemListContainer.category);
+      } else {
+        url = this.factoryFields.getUrl(this.itemListContainer.category);
       }
 
-      const url = this.factoryFields.getUrl(this.itemListContainer.category);
       this.apiRequest
         .updateValue(`${url}${this.item.id}/`, newValues)
         .subscribe(
           (res) => {
             this.itemListContainer.chargeData();
             this.itemList.closeFieldEditor();
+            this.successfulSended = true;
+            this.inputError = false;
           },
-          (error) => {}
+          (error) => {
+            this.inputError = true;
+            for (let msg in error.error) {
+              this.inputErrorMsg += error.error[msg];
+            }
+          }
         );
     } else {
       this.itemList.isNotSuperUserError();

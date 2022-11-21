@@ -86,7 +86,12 @@ export class FieldUploadComponent {
         validationField[1].push(Validators.email);
       }
 
-      validationFields[root.field] = validationField;
+      // Object Validation
+      if (!root.child) {
+        validationFields[root.field] = validationField;
+      } else {
+        validationFields[root.childName] = validationField;
+      }
     }
 
     return this.fb.group(validationFields);
