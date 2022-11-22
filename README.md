@@ -27,10 +27,14 @@ To clone and run this application you'll need AngularCLI, Git, PostgreSQL, Node.
 
     DATABASE_URL=postgres://(postgresUser):(postgresPassword)@127.0.0.1:5432/(dbName)
 
+    FRONT_END_URL=http://localhost:4200/
+    APP_NAME="User Module EMSER"
+
     EMAIL_HOST=smtp.gmail.com
     EMAIL_PORT=587
+    EMAIL_USE_TLS=True
     EMAIL_HOST_USER=(email)
-    EMAIL_HOST_PASSWORD=(password)
+    EMAIL_HOST_PASSWORD=(apps_email_password)
 ```
 
 - `python3 or py manage.py migrate` to migrate database
