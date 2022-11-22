@@ -1,4 +1,7 @@
 from django.contrib.auth import get_user_model
+from django.shortcuts import get_object_or_404
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.utils.http import urlsafe_base64_decode
 
 from rest_framework import serializers
 
@@ -6,6 +9,8 @@ from rest_framework_simplejwt.serializers import (
     TokenObtainPairSerializer,
     TokenRefreshSerializer,
 )
+
+from .utils import send_reset_password_email
 
 
 class UserAccountSerializer(serializers.ModelSerializer):
@@ -66,6 +71,9 @@ class ResetPasswordSerializer(serializers.Serializer):
         fields = ["email"]
 
     def validate_email(self, value):
+        """
+        Validates if email has an user asossiated
+        """
         associated_user = get_user_model().objects.filter(email=value).exists()
 
         if not associated_user:
@@ -75,7 +83,42 @@ class ResetPasswordSerializer(serializers.Serializer):
         return value
 
     def save(self, **kwargs):
-        self.validated_data["email"]
+        """
+        Sends an email with the data
+        """
+        email = self.validated_data["email"]
+
+        send_reset_password_email(email)
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    """
+    Changes the user password serializer
+    """
+
+    password = serializers.CharField(min_length=5, write_only=True)
+
+    class Meta:
+        fields = ["password"]
+
+    def validate(self, attrs):
+        password = attrs.get("password", "")
+        token = self.context["kwargs"]["token"]
+        encoded_pk = self.context["kwargs"]["encoded_pk"]
+
+        if encoded_pk is None or token is None:
+            raise serializers.ValidationError("Missing token or encoded pk")
+
+        pk = urlsafe_base64_decode(encoded_pk).decode()
+        user = get_object_or_404(get_user_model(), pk=pk)
+
+        if not PasswordResetTokenGenerator().check_token(user, token):
+            raise serializers.ValidationError("Unknown token")
+
+        user.set_password(password)
+        user.save()
+
+        return attrs
 
 
 class LoginTokenObtainSerializer(TokenObtainPairSerializer):

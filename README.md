@@ -26,6 +26,11 @@ To clone and run this application you'll need AngularCLI, Git, PostgreSQL, Node.
     DEBUG=True
 
     DATABASE_URL=postgres://(postgresUser):(postgresPassword)@127.0.0.1:5432/(dbName)
+
+    EMAIL_HOST=smtp.gmail.com
+    EMAIL_PORT=587
+    EMAIL_HOST_USER=(email)
+    EMAIL_HOST_PASSWORD=(password)
 ```
 
 - `python3 or py manage.py migrate` to migrate database

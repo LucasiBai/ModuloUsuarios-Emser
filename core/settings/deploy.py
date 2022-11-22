@@ -4,7 +4,6 @@ DEBUG = "RENDER" not in os.environ
 
 SECRET_KEY = os.environ.get("SECRET_KEY", default=env("SECRET_KEY"))
 
-
 ALLOWED_HOSTS = ["*"]
 
 RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
