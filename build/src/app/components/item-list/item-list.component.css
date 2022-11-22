@@ -1,0 +1,8 @@
+.item-table-box {
+  overflow-x: scroll;
+}
+
+.item-table-box th {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}

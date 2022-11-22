@@ -8,7 +8,7 @@
     class="d-flex flex-column align-items-center row"
   >
     <div
-      class="alert alert-danger col-md-3 col-sm-9 col-9 row mt-3 mb-3"
+      class="alert alert-danger col-md-3 col-sm-9 col-9 row mt-3 mb-3 login-box"
       role="alert"
       *ngIf="errorsMsg"
     >
@@ -16,7 +16,7 @@
       {{ "The credentials entered are erroneous." | translate }}
     </div>
 
-    <div class="col-md-3 col-sm-9 col-9 row mt-3 mb-3">
+    <div class="col-md-3 col-sm-9 col-9 row mt-3 mb-2 login-box">
       <div
         class="alert alert-danger"
         role="alert"
@@ -42,7 +42,7 @@
       />
     </div>
 
-    <div class="col-md-3 col-sm-9 col-9 row mt-3 mb-3">
+    <div class="col-md-3 col-sm-9 col-9 row mt-3 mb-3 login-box">
       <div
         class="alert alert-danger"
         role="alert"
@@ -67,7 +67,7 @@
       >
     </div>
 
-    <div class="col-md-3 col-sm-9 col-9 row mt-3 mb-3">
+    <div class="col-md-3 col-sm-9 col-9 row mt-3 mb-3 login-box">
       <input type="submit" class="btn btn-primary col-12" />
     </div>
   </form>
