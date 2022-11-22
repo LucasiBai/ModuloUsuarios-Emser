@@ -32,13 +32,16 @@ export class ResetPasswordContainerComponent {
 
   ngOnInit(): void {
     const title = this.translate.instant('User Module');
-    const subtitle = this.translate.instant('Login');
+    const subtitle = this.translate.instant('Reset Password');
 
     this.emailResetPasswordForm = this.initForm();
     this.metaService.addTags([
       { name: 'description', content: 'Módulos de usuario login' },
       { name: 'author', content: 'LucasiBai' },
-      { name: 'keywords', content: 'usuarios, login, módulo, proyectos' },
+      {
+        name: 'keywords',
+        content: 'usuarios, reset, password,login, módulo, proyectos',
+      },
     ]);
     this.titleService.setTitle(`${title} | ${subtitle}`);
   }
@@ -54,8 +57,6 @@ export class ResetPasswordContainerComponent {
           this.emailSended = true;
         },
         (errors) => {
-          console.log(errors, this.emailResetPasswordForm.value);
-
           this.errorsMsg = errors.error.email[0];
         }
       );
