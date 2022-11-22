@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { NavBarComponent } from 'src/app/components/nav-bar/nav-bar.component';
+import { Meta, Title } from '@angular/platform-browser';
 
+import { TranslateService } from '@ngx-translate/core';
 import { APIRequestsService } from 'src/app/services/api-requests.service';
 import { DarkModeService } from 'src/app/services/dark-mode.service';
 import { FactoryFieldsService } from 'src/app/services/factory-fields.service';
@@ -26,12 +27,30 @@ export class ItemListContainerComponent {
     private apiRequest: APIRequestsService,
     private factoryFieldsService: FactoryFieldsService,
     private readonly route: ActivatedRoute,
-    private darkMode: DarkModeService
+    private darkMode: DarkModeService,
+    private metaService: Meta,
+    private titleService: Title,
+    private translate: TranslateService
   ) {
     this.chargeData();
   }
 
   ngOnChange() {}
+
+  ngOnInit() {
+    const title = this.translate.instant('User Module');
+    const subtitle = this.translate.instant(this.title);
+
+    this.metaService.addTags([
+      { name: 'description', content: 'Módulos de usuario tabla home' },
+      { name: 'author', content: 'LucasiBai' },
+      {
+        name: 'keywords',
+        content: 'home, usuarios, tablas, módulo, proyectos',
+      },
+    ]);
+    this.titleService.setTitle(`${title} | ${subtitle}`);
+  }
 
   public searchData(table: string) {
     this.fields = this.factoryFieldsService.getFields(table);

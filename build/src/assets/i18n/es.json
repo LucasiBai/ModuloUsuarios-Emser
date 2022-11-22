@@ -55,5 +55,6 @@
   "Successfully created": "Creado correctamente",
   "true": "verdadero",
   "false": "falso",
-  "Successfully updated": "Actualizado correctamente"
+  "Successfully updated": "Actualizado correctamente",
+  "Email entered must be associated with an user": "El email ingresado debe estar asociado a un usuario existente"
 }
