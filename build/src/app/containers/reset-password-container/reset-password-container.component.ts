@@ -47,19 +47,20 @@ export class ResetPasswordContainerComponent {
   }
 
   onSendEmail(): void {
-    this.apiRequest
-      .post('users/reset-password/', this.emailResetPasswordForm.value)
-      .subscribe(
-        (res: any) => {
-          this.errorsMsg = '';
-          this.successMsg = res['message'];
+    const email = this.emailResetPasswordForm.value['email'].trim();
+    const emailPayload = { email };
 
-          this.emailSended = true;
-        },
-        (errors) => {
-          this.errorsMsg = errors.error.email[0];
-        }
-      );
+    this.apiRequest.post('users/reset-password/', emailPayload).subscribe(
+      (res: any) => {
+        this.errorsMsg = '';
+        this.successMsg = res['message'];
+
+        this.emailSended = true;
+      },
+      (errors) => {
+        this.errorsMsg = errors.error.email[0];
+      }
+    );
   }
 
   initForm(): FormGroup {

@@ -8,9 +8,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { APIRequestsService } from 'src/app/services/api-requests.service';
 
 @Component({
-  selector: 'app-reset-password-Validate',
-  templateUrl: './reset-password-Validate.component.html',
-  styleUrls: ['./reset-password-Validate.component.css'],
+  selector: 'app-reset-password-validate',
+  templateUrl: './reset-password-validate.component.html',
+  styleUrls: ['./reset-password-validate.component.css'],
 })
 export class ResetPasswordValidateComponent {
   resetPasswordForm!: FormGroup;
@@ -56,21 +56,35 @@ export class ResetPasswordValidateComponent {
   }
 
   onChangePassword(): void {
-    this.apiRequest
-      .updateValue(`users/reset-password/${this.encodedPk}/${this.token}/`, {
-        password: this.resetPasswordForm.value['password'],
-      })
-      .subscribe(
-        (res: any) => {
-          this.errorsMsg = '';
-          this.successMsg = res['message'];
+    const data = this.resetPasswordForm.value;
 
-          this.passwordChanged = true;
-        },
-        (errors) => {
-          this.errorsMsg = 'The current link is disabled';
-        }
-      );
+    if (data['password'] === data['repeatPassword']) {
+      const passwordPayload = {
+        password: this.resetPasswordForm.value['password'],
+      };
+
+      this.apiRequest
+        .updateValue(
+          `users/reset-password/${this.encodedPk}/${this.token}/`,
+          passwordPayload
+        )
+        .subscribe(
+          (res: any) => {
+            this.errorsMsg = '';
+            this.successMsg = res['message'];
+
+            this.passwordChanged = true;
+            this.resetPasswordForm = this.initForm();
+          },
+          (errors) => {
+            this.successMsg = '';
+            this.errorsMsg = 'The current link is disabled';
+          }
+        );
+    } else {
+      this.successMsg = '';
+      this.errorsMsg = 'Passwords must match';
+    }
   }
 
   initForm(): FormGroup {
