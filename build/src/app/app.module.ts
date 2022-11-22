@@ -25,6 +25,8 @@ import { AskForDeleteComponent } from './components/ask-for-delete/ask-for-delet
 import { FieldUploadComponent } from './components/field-upload/field-upload.component';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { ResetPasswordContainerComponent } from './containers/reset-password-container/reset-password-container.component';
+import { ResetPasswordValidateComponent } from './components/reset-password-validate/reset-password-validate.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -40,6 +42,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     FieldEditorComponent,
     FieldUploadComponent,
     AskForDeleteComponent,
+    ResetPasswordContainerComponent,
+    ResetPasswordValidateComponent,
   ],
   imports: [
     BrowserModule,
