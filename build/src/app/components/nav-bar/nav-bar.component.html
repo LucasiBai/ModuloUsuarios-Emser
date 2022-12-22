@@ -1,11 +1,16 @@
-<nav [attr.class]="onDarkMode ? 'navbar bg-dark ' : 'navbar bg-light'">
+<nav
+  [ngClass]="{
+    navbar: true,
+    'bg-dark ': onDarkMode,
+    'bg-light': !onDarkMode
+  }"
+>
   <div class="container-fluid">
     <a
-      [attr.class]="
-        onDarkMode
-          ? 'navbar-brand text-light fw-semibold '
-          : 'navbar-brand fw-semibold'
-      "
+      [ngClass]="{
+        'navbar-brand fw-semibold ': true,
+        'text-light': onDarkMode
+      }"
       routerLink="/"
       >{{ "User Module" | translate }}</a
     >
@@ -19,11 +24,10 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div
-      [attr.class]="
-        onDarkMode
-          ? 'offcanvas offcanvas-end text-bg-dark '
-          : 'offcanvas offcanvas-end'
-      "
+      [ngClass]="{
+        'text-bg-dark ': onDarkMode,
+        'offcanvas offcanvas-end': true
+      }"
       class="offcanvas offcanvas-end"
       tabindex="-1"
       id="offcanvasNavbar"
@@ -59,7 +63,7 @@
           <li class="nav-item">
             <a
               [attr.class]="onDarkMode ? 'nav-link text-secondary' : 'nav-link'"
-              href="/tables/users"
+              routerLink="/tables/users"
               [routerLinkActive]="'active'"
               >{{ "Users" | translate }}</a
             >
@@ -67,7 +71,7 @@
           <li class="nav-item">
             <a
               [attr.class]="onDarkMode ? 'nav-link text-secondary' : 'nav-link'"
-              href="/tables/projects"
+              routerLink="/tables/projects"
               [routerLinkActive]="'active'"
               >{{ "Projects" | translate }}</a
             >
@@ -75,7 +79,7 @@
           <li class="nav-item">
             <a
               [attr.class]="onDarkMode ? 'nav-link text-secondary' : 'nav-link'"
-              href="/tables/projects-users"
+              routerLink="/tables/projects-users"
               [routerLinkActive]="'active'"
               >{{ "Projects Users" | translate }}</a
             >

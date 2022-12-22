@@ -36,94 +36,95 @@
 </div>
 
 <!-- Table -->
+<div class="item-table-box">
+  <table
+    [attr.class]="
+      darkMode
+        ? 'table table-dark table-striped mt-3 mb-3 '
+        : 'table table-light table-striped mt-3 mb-3 '
+    "
+  >
+    <thead>
+      <tr>
+        <th *ngFor="let field of fields">{{ field.as | translate }}</th>
+        <!-- Active Field Header -->
+        <th *ngIf="isActiveField">{{ "Is Active" | translate }}</th>
+        <!-- Setting Field Header -->
+        <th *ngIf="settingsField">{{ "Settings" | translate }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of item_list">
+        <td *ngFor="let field of fields">
+          <span *ngIf="!field.child">{{ item[field.field] | translate }}</span>
+          <span *ngIf="field.child">{{
+            item[field.field][field.childName]
+          }}</span>
+        </td>
 
-<table
-  [attr.class]="
-    darkMode
-      ? 'table table-dark table-striped mt-3 mb-3 item-table-box'
-      : 'table table-light table-striped mt-3 mb-3 item-table-box'
-  "
->
-  <thead>
-    <tr>
-      <th *ngFor="let field of fields">{{ field.as | translate }}</th>
-      <!-- Active Field Header -->
-      <th *ngIf="isActiveField">{{ "Is Active" | translate }}</th>
-      <!-- Setting Field Header -->
-      <th *ngIf="settingsField">{{ "Settings" | translate }}</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let item of item_list">
-      <td *ngFor="let field of fields">
-        <span *ngIf="!field.child">{{ item[field.field] | translate }}</span>
-        <span *ngIf="field.child">{{
-          item[field.field][field.childName]
-        }}</span>
-      </td>
+        <!-- Active Field Body -->
+        <td *ngIf="isActiveField">
+          {{ item.is_active
+          }}<button
+            class="btn btn-sm"
+            (click)="updateStatus(item.id, item.is_active)"
+          >
+            <i class="bi bi-arrow-counterclockwise"></i>
+          </button>
+        </td>
 
-      <!-- Active Field Body -->
-      <td *ngIf="isActiveField">
-        {{ item.is_active
-        }}<button
-          class="btn btn-sm"
-          (click)="updateStatus(item.id, item.is_active)"
-        >
-          <i class="bi bi-arrow-counterclockwise"></i>
-        </button>
-      </td>
+        <!-- Setting Field Body -->
+        <td *ngIf="settingsField">
+          <button
+            (click)="showFieldEditor(item)"
+            class="btn btn-sm"
+            data-bs-toggle="modal"
+            data-bs-target="#editFieldsModal"
+          >
+            <i class="bi bi-pencil-square"></i>
+          </button>
+          <button
+            (click)="askForDelete(item)"
+            class="btn btn-danger btn-sm"
+            type="button"
+            data-bs-toggle="modal"
+            data-bs-target="#deleteRowModal"
+          >
+            <i class="bi bi-x"></i>
+          </button>
+        </td>
+      </tr>
 
-      <!-- Setting Field Body -->
-      <td *ngIf="settingsField">
-        <button
-          (click)="showFieldEditor(item)"
-          class="btn btn-sm"
-          data-bs-toggle="modal"
-          data-bs-target="#editFieldsModal"
-        >
-          <i class="bi bi-pencil-square"></i>
-        </button>
-        <button
-          (click)="askForDelete(item)"
-          class="btn btn-danger btn-sm"
-          type="button"
-          data-bs-toggle="modal"
-          data-bs-target="#deleteRowModal"
-        >
-          <i class="bi bi-x"></i>
-        </button>
-      </td>
-    </tr>
+      <!-- Loading table -->
+      <tr *ngIf="!item_list">
+        <td *ngFor="let fieldLoad of fields">
+          {{ "Loading" | translate }}
+          <div class="spinner-border spinner-border-sm" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </td>
+        <td *ngIf="isActiveField">
+          {{ "Loading" | translate }}
+          <div class="spinner-border spinner-border-sm" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </td>
+        <td *ngIf="settingsField">
+          {{ "Loading" | translate }}
+          <div class="spinner-border spinner-border-sm" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </td>
+      </tr>
 
-    <!-- Loading table -->
-    <tr *ngIf="!item_list">
-      <td *ngFor="let fieldLoad of fields">
-        {{ "Loading" | translate }}
-        <div class="spinner-border spinner-border-sm" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
-      </td>
-      <td *ngIf="isActiveField">
-        {{ "Loading" | translate }}
-        <div class="spinner-border spinner-border-sm" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
-      </td>
-      <td *ngIf="settingsField">
-        {{ "Loading" | translate }}
-        <div class="spinner-border spinner-border-sm" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
-      </td>
-    </tr>
-
-    <!-- Empty table -->
-    <tr *ngIf="item_list !== undefined && item_list.length === 0">
-      <td *ngFor="let fieldLoad of fields">
-        {{ "Empty table" | translate }}...
-      </td>
-      <td *ngIf="isActiveField">{{ "" }}</td>
-      <td *ngIf="settingsField">{{ "" }}</td>
-    </tr>
-  </tbody>
-</table>
+      <!-- Empty table -->
+      <tr *ngIf="item_list !== undefined && item_list.length === 0">
+        <td *ngFor="let fieldLoad of fields">
+          {{ "Empty table" | translate }}...
+        </td>
+        <td *ngIf="isActiveField">{{ "" }}</td>
+        <td *ngIf="settingsField">{{ "" }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

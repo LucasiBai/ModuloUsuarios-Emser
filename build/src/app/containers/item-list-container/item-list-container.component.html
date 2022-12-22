@@ -1,7 +1,7 @@
 <header>
   <app-nav-bar></app-nav-bar>
 </header>
-<main [attr.class]="isDarkMode ? 'row vh-100 bg-secondary' : 'row vh-100'">
+<main [ngClass]="{ 'bg-secondary': isDarkMode, 'row vh-100': true }">
   <app-item-list
     [darkMode]="isDarkMode"
     [item_list]="item_list"

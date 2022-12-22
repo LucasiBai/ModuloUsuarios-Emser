@@ -27,7 +27,7 @@ export class ItemListComponent {
   isCurrentUserError: Boolean = false;
   _isNotSuperUserError: Boolean = false;
 
-  // Permisions
+  // Permissions
   isSuperuser: Boolean =
     this.authService.getUserPermises() === 'superuser' ? true : false;
 
@@ -94,7 +94,15 @@ export class ItemListComponent {
   // Delete Item
 
   public askForDelete(item: any) {
-    this.askingForDelete['title'] = item.username || item.name || item.project;
+    if (!item.author) {
+      this.askingForDelete['title'] =
+        item.username || item.name || item.project;
+    } else {
+      this.askingForDelete[
+        'title'
+      ] = `"${item.author.username} / ${item.project.name}"`;
+    }
+
     this.askingForDelete['id'] = item.id;
   }
 

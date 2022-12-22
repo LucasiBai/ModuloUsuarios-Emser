@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Meta, Title } from '@angular/platform-browser';
 
@@ -6,19 +6,21 @@ import { TranslateService } from '@ngx-translate/core';
 import { APIRequestsService } from 'src/app/services/api-requests.service';
 import { DarkModeService } from 'src/app/services/dark-mode.service';
 import { FactoryFieldsService } from 'src/app/services/factory-fields.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-item-list-container',
   templateUrl: './item-list-container.component.html',
   styleUrls: ['./item-list-container.component.css'],
 })
-export class ItemListContainerComponent {
+export class ItemListContainerComponent implements OnInit {
+  routerSubscriber!: Subscription;
   category!: string;
   title: string = 'User';
 
   isDarkMode: boolean = this.darkMode.getDarkModeStatus();
 
-  item_list!: any[];
+  item_list!: any;
   fields!: any[];
 
   createFields!: any[];
@@ -34,8 +36,6 @@ export class ItemListContainerComponent {
   ) {
     this.chargeData();
   }
-
-  ngOnChange() {}
 
   ngOnInit() {
     const title = this.translate.instant('User Module');
@@ -69,11 +69,14 @@ export class ItemListContainerComponent {
   }
 
   public chargeData() {
-    this.route.params.subscribe(({ category }) => (this.category = category));
-    if (!this.category) {
-      this.searchData('users');
-    } else {
-      this.searchData(this.category);
-    }
+    this.route.params.subscribe(({ category }) => {
+      this.category = category;
+      if (!category) {
+        this.searchData('users');
+      } else {
+        this.searchData(this.category);
+      }
+      this.item_list = undefined;
+    });
   }
 }
