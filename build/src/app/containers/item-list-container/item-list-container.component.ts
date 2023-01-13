@@ -18,7 +18,7 @@ export class ItemListContainerComponent implements OnInit {
   category!: string;
   title: string = 'User';
 
-  isDarkMode: boolean = this.darkMode.getDarkModeStatus();
+  isDarkMode!: boolean;
 
   item_list!: any;
   fields!: any[];
@@ -38,6 +38,10 @@ export class ItemListContainerComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.darkMode.darkModeStatus.subscribe((res) => {
+      this.isDarkMode = res;
+    });
+
     const title = this.translate.instant('User Module');
     const subtitle = this.translate.instant(this.title);
 

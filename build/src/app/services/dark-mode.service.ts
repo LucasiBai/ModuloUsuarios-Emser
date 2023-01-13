@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -6,20 +7,23 @@ import { Injectable } from '@angular/core';
 export class DarkModeService {
   constructor() {}
 
-  private _isInDarkMode!: boolean;
+  private _isInDarkMode: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
 
-  getDarkModeStatus() {
+  get darkModeStatus() {
     const onDarkMode = window.localStorage.getItem('darkMode') || false;
+
     if (onDarkMode === 'true') {
-      this._isInDarkMode = true;
-      return true;
+      this.setDarkModeStatus = true;
     } else {
-      this._isInDarkMode = false;
-      return false;
+      this.setDarkModeStatus = false;
     }
+
+    return this._isInDarkMode.asObservable();
   }
 
-  setOnDarkMode(e: any) {
-    window.localStorage.setItem('darkMode', e.target.checked);
+  set setDarkModeStatus(status: boolean) {
+    window.localStorage.setItem('darkMode', String(status));
+    this._isInDarkMode.next(status);
   }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AuthService } from 'src/app/services/auth.service';
@@ -10,10 +10,10 @@ import { ManageLanguageService } from 'src/app/services/manage-language.service'
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.css'],
 })
-export class NavBarComponent {
+export class NavBarComponent implements OnInit {
   user: any = this.authService.getUserData();
 
-  onDarkMode: any = this.darkMode.getDarkModeStatus();
+  onDarkMode!: boolean;
 
   selectedLanguage: string = this.translate.getCurrentLanguage();
 
@@ -24,16 +24,19 @@ export class NavBarComponent {
     private translate: ManageLanguageService
   ) {}
 
+  ngOnInit() {
+    this.darkMode.darkModeStatus.subscribe((res) => {
+      this.onDarkMode = res;
+    });
+  }
+
   public logout() {
     this.authService.logout();
     this.router.navigateByUrl('/login');
   }
 
   public setDarkMode(e: any) {
-    this.darkMode.setOnDarkMode(e);
-    setTimeout(() => {
-      window.location.reload();
-    }, 160);
+    this.darkMode.setDarkModeStatus = e.target.checked;
   }
 
   public changeLanguage(e: any) {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -12,14 +12,14 @@ import { APIRequestsService } from 'src/app/services/api-requests.service';
   templateUrl: './reset-password-container.component.html',
   styleUrls: ['./reset-password-container.component.css'],
 })
-export class ResetPasswordContainerComponent {
+export class ResetPasswordContainerComponent implements OnInit {
   emailResetPasswordForm!: FormGroup;
 
   errorsMsg!: string;
   successMsg!: string;
   emailSended!: boolean;
 
-  isDarkMode: boolean = this.darkMode.getDarkModeStatus();
+  isDarkMode!: boolean;
 
   constructor(
     private readonly fb: FormBuilder,
@@ -31,6 +31,10 @@ export class ResetPasswordContainerComponent {
   ) {}
 
   ngOnInit(): void {
+    this.darkMode.darkModeStatus.subscribe((res) => {
+      this.isDarkMode = res;
+    });
+
     const title = this.translate.instant('User Module');
     const subtitle = this.translate.instant('Reset Password');
 

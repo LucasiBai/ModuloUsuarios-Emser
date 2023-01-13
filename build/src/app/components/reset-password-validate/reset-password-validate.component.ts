@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -12,7 +12,7 @@ import { APIRequestsService } from 'src/app/services/api-requests.service';
   templateUrl: './reset-password-validate.component.html',
   styleUrls: ['./reset-password-validate.component.css'],
 })
-export class ResetPasswordValidateComponent {
+export class ResetPasswordValidateComponent implements OnInit {
   resetPasswordForm!: FormGroup;
 
   token!: string;
@@ -22,7 +22,7 @@ export class ResetPasswordValidateComponent {
   successMsg!: string;
   passwordChanged!: boolean;
 
-  isDarkMode: boolean = this.darkMode.getDarkModeStatus();
+  isDarkMode!: boolean;
 
   constructor(
     private readonly fb: FormBuilder,
@@ -35,6 +35,10 @@ export class ResetPasswordValidateComponent {
   ) {}
 
   ngOnInit(): void {
+    this.darkMode.darkModeStatus.subscribe((res) => {
+      this.isDarkMode = res;
+    });
+
     const title = this.translate.instant('User Module');
     const subtitle = this.translate.instant('Reset Password');
 

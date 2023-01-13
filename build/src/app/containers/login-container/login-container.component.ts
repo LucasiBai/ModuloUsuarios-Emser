@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -12,12 +12,12 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './login-container.component.html',
   styleUrls: ['./login-container.component.css'],
 })
-export class LoginContainerComponent {
+export class LoginContainerComponent implements OnInit {
   loginForm!: FormGroup;
 
   errorsMsg!: string;
 
-  isDarkMode: boolean = this.darkMode.getDarkModeStatus();
+  isDarkMode!: boolean;
 
   constructor(
     private readonly fb: FormBuilder,
@@ -30,6 +30,10 @@ export class LoginContainerComponent {
   ) {}
 
   ngOnInit(): void {
+    this.darkMode.darkModeStatus.subscribe((res) => {
+      this.isDarkMode = res;
+    });
+
     const title = this.translate.instant('User Module');
     const subtitle = this.translate.instant('Login');
 
