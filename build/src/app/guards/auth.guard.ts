@@ -7,14 +7,14 @@ import {
   UrlTree,
 } from '@angular/router';
 
-import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
+import { AuthService } from '../services/auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  constructor(private cookieService: CookieService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
@@ -25,12 +25,9 @@ export class AuthGuard implements CanActivate {
     | boolean
     | UrlTree
     | any {
-    const cookie = this.cookieService.check('token');
-    const refreshExpiration = Number(
-      this.cookieService.get('refresh-expiration')
-    );
+    const { hasToken, expiration } = this.authService.hasToken();
 
-    if (!cookie || refreshExpiration < Date.now()) {
+    if (!hasToken || expiration < Date.now()) {
       this.router.navigateByUrl('/login');
       return false;
     } else {

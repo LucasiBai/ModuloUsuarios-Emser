@@ -7,6 +7,8 @@ import { AuthService } from 'src/app/services/auth.service';
 import { DarkModeService } from 'src/app/services/dark-mode.service';
 import { TranslateService } from '@ngx-translate/core';
 
+import { Observable } from 'rxjs';
+
 @Component({
   selector: 'app-login-container',
   templateUrl: './login-container.component.html',
@@ -18,6 +20,8 @@ export class LoginContainerComponent implements OnInit {
   errorsMsg!: string;
 
   isDarkMode!: boolean;
+
+  isLoading!: Observable<boolean>;
 
   constructor(
     private readonly fb: FormBuilder,

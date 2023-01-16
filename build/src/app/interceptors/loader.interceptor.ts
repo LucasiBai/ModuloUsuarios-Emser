@@ -1,0 +1,27 @@
+import { Injectable } from '@angular/core';
+import {
+  HttpRequest,
+  HttpHandler,
+  HttpEvent,
+  HttpInterceptor,
+} from '@angular/common/http';
+import { finalize, Observable } from 'rxjs';
+import { IsLoadingService } from '../services/is-loading.service';
+
+@Injectable()
+export class LoaderInterceptor implements HttpInterceptor {
+  constructor(private isLoadingService: IsLoadingService) {}
+
+  intercept(
+    request: HttpRequest<unknown>,
+    next: HttpHandler
+  ): Observable<HttpEvent<unknown>> {
+    this.isLoadingService.setIsLoading = true;
+
+    return next.handle(request).pipe(
+      finalize(() => {
+        this.isLoadingService.setIsLoading = false;
+      })
+    );
+  }
+}

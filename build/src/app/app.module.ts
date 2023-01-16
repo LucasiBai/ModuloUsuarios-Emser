@@ -27,6 +27,8 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { ResetPasswordContainerComponent } from './containers/reset-password-container/reset-password-container.component';
 import { ResetPasswordValidateComponent } from './components/reset-password-validate/reset-password-validate.component';
+import { LoaderComponent } from './components/loader/loader.component';
+import { LoaderInterceptor } from './interceptors/loader.interceptor';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -44,6 +46,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     AskForDeleteComponent,
     ResetPasswordContainerComponent,
     ResetPasswordValidateComponent,
+    LoaderComponent,
   ],
   imports: [
     BrowserModule,
@@ -62,6 +65,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     CookieService,
     AuthService,
     { provide: HTTP_INTERCEPTORS, useClass: UserAuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
 })

@@ -6,51 +6,46 @@ import {
   HttpInterceptor,
   HttpErrorResponse,
 } from '@angular/common/http';
-import { CookieService } from 'ngx-cookie-service';
-import { Observable } from 'rxjs';
+
+import { catchError, Observable, switchMap, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';
+import { UpdatedTokenInterface } from '../models/updated-token-interface';
 
 @Injectable()
 export class UserAuthInterceptor implements HttpInterceptor {
-  constructor(
-    private cookieService: CookieService,
-    private authService: AuthService
-  ) {}
+  constructor(private authService: AuthService) {}
 
-  token!: string;
+  static token: string;
 
   intercept(
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
-    const tokenExpiration = Number(this.cookieService.get('token-expiration'));
+    const req = this.getRequest(request);
 
-    let req = request;
+    return next.handle(req).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 401) {
+          return this.authService.refreshToken().pipe(
+            switchMap((res: UpdatedTokenInterface) => {
+              this.authService.refreshTokenCookie(res);
+              const req = this.getRequest(request);
 
-    if (tokenExpiration < Date.now()) {
-      this.authService.refreshToken().subscribe((res) => {
-        console.log(res);
+              return next.handle(req);
+            })
+          );
+        }
 
-        this.token = res['updated-token'];
+        return throwError(() => error);
+      })
+    );
+  }
 
-        req = req.clone({
-          setHeaders: {
-            authorization: `Bearer ${this.token}`,
-          },
-        });
-
-        return next.handle(req);
-      });
-    } else {
-      this.token = this.cookieService.get('token');
-    }
-
-    req = req.clone({
+  private getRequest(request: HttpRequest<unknown>) {
+    return request.clone({
       setHeaders: {
-        authorization: `Bearer ${this.token}`,
+        Authorization: `Bearer ${UserAuthInterceptor.token}`,
       },
     });
-
-    return next.handle(req);
   }
 }

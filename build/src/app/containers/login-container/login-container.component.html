@@ -38,7 +38,7 @@
         placeholder="Email"
         formControlName="email"
         required
-        class="col-12"
+        class="col-12 form-control"
       />
     </div>
 
@@ -55,7 +55,7 @@
         placeholder="{{ 'Password' | translate }}"
         formControlName="password"
         required
-        class="col-12 m-0"
+        class="col-12 m-0 form-control"
       />
 
       <label class="p-0"
@@ -67,8 +67,10 @@
       >
     </div>
 
+    <app-loader></app-loader>
+
     <div class="col-md-3 col-sm-9 col-9 row mt-3 mb-3 login-box">
-      <input type="submit" class="btn btn-primary col-12" />
+      <input type="submit" class="btn btn-primary col-12 form-control" />
     </div>
   </form>
 </main>
