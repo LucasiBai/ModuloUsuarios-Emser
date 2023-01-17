@@ -15,7 +15,15 @@ export class IsLoadingService {
     return this.isLoading$.asObservable();
   }
 
-  set setIsLoading(bool: boolean) {
+  private set setIsLoading(bool: boolean) {
     this.isLoading$.next(bool);
+  }
+
+  showLoader(): void {
+    this.setIsLoading = true;
+  }
+
+  hideLoader(): void {
+    this.setIsLoading = false;
   }
 }

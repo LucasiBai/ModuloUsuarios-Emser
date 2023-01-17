@@ -7,23 +7,19 @@ import { BehaviorSubject } from 'rxjs';
 export class DarkModeService {
   constructor() {}
 
-  private _isInDarkMode: BehaviorSubject<boolean> =
+  private _isInDarkMode$: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
 
   get darkModeStatus() {
     const onDarkMode = window.localStorage.getItem('darkMode') || false;
 
-    if (onDarkMode === 'true') {
-      this.setDarkModeStatus = true;
-    } else {
-      this.setDarkModeStatus = false;
-    }
+    this.setDarkModeStatus = Boolean(onDarkMode == 'true');
 
-    return this._isInDarkMode.asObservable();
+    return this._isInDarkMode$.asObservable();
   }
 
   set setDarkModeStatus(status: boolean) {
     window.localStorage.setItem('darkMode', String(status));
-    this._isInDarkMode.next(status);
+    this._isInDarkMode$.next(status);
   }
 }
