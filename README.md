@@ -1,7 +1,7 @@
 <h1 align="center">
   <br>
   <a href="http://www.emser.net/">
-  <img src="https://media.cylex.com.ar/companies/1111/5565/logo/logo.jpg" alt="Emser" width="200"></a>
+  <img src="https://www.emser.net/static/images/emser.jpg" alt="Emser" width="200"></a>
   <br>
   EMSER TEST
   <br>
